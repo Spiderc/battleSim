@@ -29,6 +29,7 @@ function pokemon(level,species){
 	this.spcdef = Math.floor((((species.spcdef * 2) * level) / 100) + 5);
 	this.spd = Math.floor((((species.spd * 2) * level) / 100) + 5);
 	this.status = null;
+	this.moves = getMoves(level,species);
 }
 
 function move(call,name){
@@ -143,4 +144,17 @@ function validateLevel(reference){
 	if(reference.val() > 100 || reference.val() < 1){
 		reference.val(5);
 	}
+}
+
+function getMoves(level,species){
+	var moves = [] ;
+	var validMoves = [];
+	for(var i=0;i<species.learnset.length;i++){
+		if(species.learnset[i].level <= level) {validMoves.push(species.learnset[i].move);}
+	}
+	moves.push(validMoves[validMoves.length-1]);
+	if(validMoves[validMoves.length-2] != null) {moves.push(validMoves[validMoves.length-2]);} else {moves.push("");}
+	if(validMoves[validMoves.length-3] != null) {moves.push(validMoves[validMoves.length-3]);} else {moves.push("");}
+	if(validMoves[validMoves.length-4] != null) {moves.push(validMoves[validMoves.length-4]);} else {moves.push("");}
+	return moves;
 }

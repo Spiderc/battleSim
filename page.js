@@ -17,45 +17,21 @@ jQuery(document).ready(function(){
 	jQuery("#pokemon2f").html(dropdownOptions);
 	var battler1 = [];
 	var battler2 = [];
-	battler1[0] = new pokemon(jQuery("#level1a").val(),findPokemon(jQuery("#pokemon1a").val()));
-	battler1[1] = new pokemon(jQuery("#level1b").val(),findPokemon(jQuery("#pokemon1b").val()));
-	battler1[2] = new pokemon(jQuery("#level1c").val(),findPokemon(jQuery("#pokemon1c").val()));
-	battler1[3] = new pokemon(jQuery("#level1d").val(),findPokemon(jQuery("#pokemon1d").val()));
-	battler1[4] = new pokemon(jQuery("#level1e").val(),findPokemon(jQuery("#pokemon1e").val()));
-	battler1[5] = new pokemon(jQuery("#level1f").val(),findPokemon(jQuery("#pokemon1f").val()));
-	battler2[0] = new pokemon(jQuery("#level2a").val(),findPokemon(jQuery("#pokemon2a").val()));
-	battler2[1] = new pokemon(jQuery("#level2b").val(),findPokemon(jQuery("#pokemon2b").val()));
-	battler2[2] = new pokemon(jQuery("#level2c").val(),findPokemon(jQuery("#pokemon2c").val()));
-	battler2[3] = new pokemon(jQuery("#level2d").val(),findPokemon(jQuery("#pokemon2d").val()));
-	battler2[4] = new pokemon(jQuery("#level2e").val(),findPokemon(jQuery("#pokemon2e").val()));
-	battler2[5] = new pokemon(jQuery("#level2f").val(),findPokemon(jQuery("#pokemon2f").val()));
-	reload();
+	load("1a");	load("1b");	load("1c");	load("1d");	load("1e");	load("1f");
+	load("2a");	load("2b");	load("2c");	load("2d");	load("2e");	load("2f");
 	
-	jQuery("#pokemon1a").change(function(){battler1[0] = new pokemon(jQuery("#level1a").val(),findPokemon(jQuery("#pokemon1a").val())); reload();});
-	jQuery("#pokemon1b").change(function(){battler1[1] = new pokemon(jQuery("#level1b").val(),findPokemon(jQuery("#pokemon1b").val())); reload();});
-	jQuery("#pokemon1c").change(function(){battler1[2] = new pokemon(jQuery("#level1c").val(),findPokemon(jQuery("#pokemon1c").val())); reload();});
-	jQuery("#pokemon1d").change(function(){battler1[3] = new pokemon(jQuery("#level1d").val(),findPokemon(jQuery("#pokemon1d").val())); reload();});
-	jQuery("#pokemon1e").change(function(){battler1[4] = new pokemon(jQuery("#level1e").val(),findPokemon(jQuery("#pokemon1e").val())); reload();});
-	jQuery("#pokemon1f").change(function(){battler1[5] = new pokemon(jQuery("#level1f").val(),findPokemon(jQuery("#pokemon1f").val())); reload();});
-	jQuery("#pokemon2a").change(function(){battler2[0] = new pokemon(jQuery("#level2a").val(),findPokemon(jQuery("#pokemon2a").val())); reload();});
-	jQuery("#pokemon2b").change(function(){battler2[1] = new pokemon(jQuery("#level2b").val(),findPokemon(jQuery("#pokemon2b").val())); reload();});
-	jQuery("#pokemon2c").change(function(){battler2[2] = new pokemon(jQuery("#level2c").val(),findPokemon(jQuery("#pokemon2c").val())); reload();});
-	jQuery("#pokemon2d").change(function(){battler2[3] = new pokemon(jQuery("#level2d").val(),findPokemon(jQuery("#pokemon2d").val())); reload();});
-	jQuery("#pokemon2e").change(function(){battler2[4] = new pokemon(jQuery("#level2e").val(),findPokemon(jQuery("#pokemon2e").val())); reload();});
-	jQuery("#pokemon2f").change(function(){battler2[5] = new pokemon(jQuery("#level2f").val(),findPokemon(jQuery("#pokemon2f").val())); reload();});
-	
-	jQuery("#level1a").change(function(){validateLevel(jQuery(this)); battler1[0] = new pokemon(jQuery("#level1a").val(),findPokemon(jQuery("#pokemon1a").val())); reload();});
-	jQuery("#level1b").change(function(){validateLevel(jQuery(this)); battler1[1] = new pokemon(jQuery("#level1b").val(),findPokemon(jQuery("#pokemon1b").val())); reload();});
-	jQuery("#level1c").change(function(){validateLevel(jQuery(this)); battler1[2] = new pokemon(jQuery("#level1c").val(),findPokemon(jQuery("#pokemon1c").val())); reload();});
-	jQuery("#level1d").change(function(){validateLevel(jQuery(this)); battler1[3] = new pokemon(jQuery("#level1d").val(),findPokemon(jQuery("#pokemon1d").val())); reload();});
-	jQuery("#level1e").change(function(){validateLevel(jQuery(this)); battler1[4] = new pokemon(jQuery("#level1e").val(),findPokemon(jQuery("#pokemon1e").val())); reload();});
-	jQuery("#level1f").change(function(){validateLevel(jQuery(this)); battler1[5] = new pokemon(jQuery("#level1f").val(),findPokemon(jQuery("#pokemon1f").val())); reload();});
-	jQuery("#level2a").change(function(){validateLevel(jQuery(this)); battler2[0] = new pokemon(jQuery("#level2a").val(),findPokemon(jQuery("#pokemon2a").val())); reload();});
-	jQuery("#level2b").change(function(){validateLevel(jQuery(this)); battler2[1] = new pokemon(jQuery("#level2b").val(),findPokemon(jQuery("#pokemon2b").val())); reload();});
-	jQuery("#level2c").change(function(){validateLevel(jQuery(this)); battler2[2] = new pokemon(jQuery("#level2c").val(),findPokemon(jQuery("#pokemon2c").val())); reload();});
-	jQuery("#level2d").change(function(){validateLevel(jQuery(this)); battler2[3] = new pokemon(jQuery("#level2d").val(),findPokemon(jQuery("#pokemon2d").val())); reload();});
-	jQuery("#level2e").change(function(){validateLevel(jQuery(this)); battler2[4] = new pokemon(jQuery("#level2e").val(),findPokemon(jQuery("#pokemon2e").val())); reload();});
-	jQuery("#level2f").change(function(){validateLevel(jQuery(this)); battler2[5] = new pokemon(jQuery("#level2f").val(),findPokemon(jQuery("#pokemon2f").val())); reload();});
+	jQuery("#pokemon1a").change(function(){load("1a");}); jQuery("#level1a").change(function(){load("1a");});
+	jQuery("#pokemon1b").change(function(){load("1b");}); jQuery("#level1b").change(function(){load("1b");});
+	jQuery("#pokemon1c").change(function(){load("1c");}); jQuery("#level1c").change(function(){load("1c");});
+	jQuery("#pokemon1d").change(function(){load("1d");}); jQuery("#level1d").change(function(){load("1d");});
+	jQuery("#pokemon1e").change(function(){load("1e");}); jQuery("#level1e").change(function(){load("1e");});
+	jQuery("#pokemon1f").change(function(){load("1f");}); jQuery("#level1f").change(function(){load("1f");});
+	jQuery("#pokemon2a").change(function(){load("2a");}); jQuery("#level2a").change(function(){load("2a");});
+	jQuery("#pokemon2b").change(function(){load("2b");}); jQuery("#level2b").change(function(){load("2b");});
+	jQuery("#pokemon2c").change(function(){load("2c");}); jQuery("#level2c").change(function(){load("2c");});
+	jQuery("#pokemon2d").change(function(){load("2d");}); jQuery("#level2d").change(function(){load("2d");});
+	jQuery("#pokemon2e").change(function(){load("2e");}); jQuery("#level2e").change(function(){load("2e");});
+	jQuery("#pokemon2f").change(function(){load("2f");}); jQuery("#level2f").change(function(){load("2f");});
 	
 	jQuery(".move").click(function(){
 		var move = jQuery(this).html();
@@ -72,6 +48,27 @@ jQuery(document).ready(function(){
 			}
 		}
 	});
+	
+	function load(target){
+		validateLevel(jQuery("#level" + target));
+		if(target.charAt(0) == "1"){
+			battler1[target.charCodeAt(1) - 97] = new pokemon(jQuery("#level" + target).val(),findPokemon(jQuery("#pokemon" + target).val()));
+			jQuery("#move" + target + "1").html(battler1[target.charCodeAt(1) - 97].moves[0]);
+			jQuery("#move" + target + "2").html(battler1[target.charCodeAt(1) - 97].moves[1]);
+			jQuery("#move" + target + "3").html(battler1[target.charCodeAt(1) - 97].moves[2]);
+			jQuery("#move" + target + "4").html(battler1[target.charCodeAt(1) - 97].moves[3]);
+			jQuery("#hpCurrent" + target).html(battler1[target.charCodeAt(1) - 97].hpCurrent);
+			jQuery("#hpMax" + target).html(battler1[target.charCodeAt(1) - 97].hpMax);
+		} else {
+			battler2[target.charCodeAt(1) - 97] = new pokemon(jQuery("#level" + target).val(),findPokemon(jQuery("#pokemon" + target).val()));
+			jQuery("#move" + target + "1").html(battler2[target.charCodeAt(1) - 97].moves[0]);
+			jQuery("#move" + target + "2").html(battler2[target.charCodeAt(1) - 97].moves[1]);
+			jQuery("#move" + target + "3").html(battler2[target.charCodeAt(1) - 97].moves[2]);
+			jQuery("#move" + target + "4").html(battler2[target.charCodeAt(1) - 97].moves[3]);
+			jQuery("#hpCurrent" + target).html(battler2[target.charCodeAt(1) - 97].hpCurrent);
+			jQuery("#hpMax" + target).html(battler2[target.charCodeAt(1) - 97].hpMax);
+		}
+	}
 	
 	function reload(){
 		jQuery("#hpCurrent1a").html(battler1[0].hpCurrent); jQuery("#hpMax1a").html(battler1[0].hpMax);
