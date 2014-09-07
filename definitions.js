@@ -2,7 +2,7 @@ function rng(min,max){
 	return Math.floor(Math.random() * (max - min + 1))+min;
 }
 
-function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcatk,spcdef,spd){
+function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcatk,spcdef,spd,learnset){
 	this.dex = dex;
 	this.name = name;
 	this.type1 = type1;
@@ -13,6 +13,7 @@ function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcatk,spcdef,spd){
 	this.spcatk = spcatk;
 	this.spcdef = spcdef;
 	this.spd = spd;
+	this.learnset = learnset;
 	}
 	
 function pokemon(level,species){
@@ -33,6 +34,11 @@ function pokemon(level,species){
 function move(call,name){
 	this.call = call;
 	this.name = name;
+}
+
+function levelMove(move,level){
+	this.move = move;
+	this.level = level;
 }
 
 function addToLog(message){
