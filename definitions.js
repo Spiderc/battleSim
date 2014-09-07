@@ -130,3 +130,17 @@ function dealDamage(defender,damage){
 		addToLog(defender.name + " fainted.");
 	}
 }
+
+function findPokemon(name){
+	var result;
+	for(var i=0;i<allPokemon.length;i++){
+		if(allPokemon[i].name == name) {result = allPokemon[i]; break;}
+	}
+	return result;
+}
+
+function validateLevel(reference){
+	if(reference.val() > 100 || reference.val() < 1){
+		reference.val(5);
+	}
+}
