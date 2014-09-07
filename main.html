@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="page.js"></script>
+<script src="definitions.js"></script>
+<script src="pokemon.js"></script>
+<script src="moves.js"></script>
+</head>
+<body>
+
+<h1>Battle Simulator</h1>
+
+<p>
+	<select id="pokemon1"></select>
+	Level:<input type="number" id="level1" value=5 style="width:50px;"></input><br/>
+	HP: <span id="hpCurrent1"></span> / <span id="hpMax1"></span><br/>
+	<button class="move" id="move11">Scratch</button>
+	<button class="move" id="move12">Tackle</button>
+	<button class="move" id="move13">Vine Whip</button>
+	<button class="move" id="move14">Attack 4</button>
+</p>
+<p>
+	<select id="pokemon2"></select>
+	Level:<input type="number" id="level2" value=5 style="width:50px;"></input><br/>
+	HP: <span id="hpCurrent2"></span> / <span id="hpMax2"></span><br/>
+	<button class="move" id="move21">Attack 1</button>
+	<button class="move" id="move22">Attack 2</button>
+	<button class="move" id="move23">Attack 3</button>
+	<button class="move" id="move24">Attack 4</button>
+</p>
+<p>
+	Battle Log:
+	<span id="battleLog"></span>
+</p>
+</body>
+</html>
