@@ -15,7 +15,7 @@ function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcatk,spcdef,spd,learns
 	this.spd = spd;
 	this.learnset = learnset;
 	}
-	
+
 function pokemon(level,species){
 	this.level = level;
 	this.name = species.name;
@@ -127,7 +127,7 @@ function dealDamage(defender,damage){
 	defender.hpCurrent = defender.hpCurrent - damage;
 	if(defender.hpCurrent < 1) {
 		defender.hpCurrent = 0;
-		defender.status = "Fainted";
+		defender.status = "fainted";
 		addToLog(defender.name + " fainted.");
 	}
 }
