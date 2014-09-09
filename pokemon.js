@@ -1,3 +1,16 @@
+/*
+	When adding a new Pokemon do the following:
+	1. Copy a previously existing Pokemon definition
+	2. Change the name of the variable
+	3. Change the national dex #, the Pokemon name, and type fields (if it only has one type, set the second type to be null)
+	4. Go to http://www.serebii.net/pokedex-xy/000.shtml where 000 is the national dex number
+	5. Scroll to the bottom of the page, copy the base stats, and then paste it into those fields replacing the tabs with commas
+	6. Change the name of the learnset variable and create the variable in learnset.js using var nameLS = []; (you don't need to populate it, just create it)
+	7. At the bottom of this page, push it into the allPokemon array using allPokemon.push(pokemonName);
+	
+	NOTE: Please add additional Pokemon in national dex order, just for simplicity
+*/
+
 var bulbasaur = new pokemonSpecies(1,"Bulbasaur","grass","poison",45,49,49,65,65,45,bulbasaurLS);
 var ivysaur = new pokemonSpecies(2,"Ivysaur","grass","poison",60,62,63,80,80,60,ivysaurLS);
 var venusaur = new pokemonSpecies(3,"Venusar","grass","poison",80,100,123,122,120,80,venusaurLS);

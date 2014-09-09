@@ -1,3 +1,13 @@
+/*
+	When adding a new learnset do the following:
+	1. Replace the default blank array with [new levelMove("",1),new levelMove("",1),new levelMove("",1),new levelMove("",1),new levelMove("",1),new levelMove("",1),new levelMove("",1)]
+	2. Go to http://www.serebii.net/pokedex-xy/000.shtml where 000 is the national dex number
+	3. Scroll to the 'X / Y Level Up' section of the page and start replacing the blank string with the Attack Name and the 1 with the Level (treat — as 1)
+	4. Repeat for all moves listed in the section adding new levelMoves as needed (make sure they are kept comma delimited)
+
+	NOTE: Many evolved Pokemon learn the same move at multiple levels (Venusaur learns Leech Seed at level 1 and level 7). In this case only use the earlier occurance of learning the move (1)
+*/
+
 var bulbasaurLS = [new levelMove("Tackle",1),new levelMove("Growl",3),new levelMove("Leech Seed",7),new levelMove("Vine Whip",9),new levelMove("Poison Powder",13),new levelMove("Sleep Powder",13),new levelMove("Take Down",15),new levelMove("Razor Leaf",19),new levelMove("Sweet Scent",21),new levelMove("Growth",25),new levelMove("Worry Seed",33),new levelMove("Seed Bomb",37)];
 var ivysaurLS = [new levelMove("Tackle",1),new levelMove("Growl",1),new levelMove("Leech Seed",1),new levelMove("Vine Whip",9),new levelMove("Poison Powder",13),new levelMove("Sleep Powder",13),new levelMove("Take Down",15),new levelMove("Razor Leaf",20),new levelMove("Sweet Scent",23),new levelMove("Growth",28),new levelMove("Double-Edge",31),new levelMove("Worry Seed",36),new levelMove("Synthesis",39),new levelMove("Solar Beam",44)];
 var venusaurLS = [new levelMove("Tackle",1),new levelMove("Growl",1),new levelMove("Leech Seed",1),new levelMove("Vine Whip",1),new levelMove("Poison Powder",13),new levelMove("Sleep Powder",13),new levelMove("Take Down",15),new levelMove("Razor Leaf",20),new levelMove("Sweet Scent",23),new levelMove("Growth",28),new levelMove("Double-Edge",31),new levelMove("Petal Dance",32),new levelMove("Worry Seed",39),new levelMove("Synthesis",45),new levelMove("Petal Blizzard",50),new levelMove("Solar Beam",53)];
