@@ -113,7 +113,11 @@ jQuery(document).ready(function(){
 		jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
 		team1[target.charCodeAt(1) - 97].status = "active";
 	} else {
-		
+		for(var i=0;i<team2.length;i++){
+			if(team2[i].status == "active") {team2[i].status = "inactive"; break;}
+		}
+		jQuery("#switch2" + String.fromCharCode(i + 97)).attr("disabled",false);
+		team2[target.charCodeAt(1) - 97].status = "active";
 	}
 	jQuery("#switch"+target).attr("disabled",true);
 	reload();
