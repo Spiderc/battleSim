@@ -30,6 +30,13 @@ function pokemon(level,species){
 	this.spd = Math.floor((((species.spd * 2) * level) / 100) + 5);
 	this.status = null;
 	this.moves = getMoves(level,species);
+	this.atkMod = 0;
+	this.defMod = 0;
+	this.spcAtkMod = 0;
+	this.spcDefMod = 0;
+	this.spdMod = 0;
+	this.accMod = 0;
+	this.evaMod = 0;
 }
 
 function move(call,name){
@@ -157,4 +164,20 @@ function getMoves(level,species){
 	if(validMoves[validMoves.length-3] != null) {moves.push(validMoves[validMoves.length-3]);} else {moves.push("");}
 	if(validMoves[validMoves.length-4] != null) {moves.push(validMoves[validMoves.length-4]);} else {moves.push("");}
 	return moves;
+}
+
+function getStatMultiplier(mod,acc){
+	var result = 1;
+	if(acc){
+		var accMods = [3/9, 3/8, 3/7, 3/6, 3/5, 3/4, 1, 1 + 1/3, 1 + 2/3, 2, 2 + 1/3, 2 + 2/3, 3];
+		result = accMods[mod + 6];
+	} else {
+		var statMods = [2/8, 2/7, 2/6, 2/5, 2/4, 2/3, 1, 1 + 1/2, 2, 2 + 1/2, 3, 3 + 1/2, 4];
+		result = statMods[mod + 6];
+	}
+	return result;
+}
+
+function attackHit(atkAcc,attackerAcc,defenderEva){
+	return (atkAcc * (attackerAcc / defenderEva)) >= rng(1,100);
 }
