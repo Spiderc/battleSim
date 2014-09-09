@@ -106,20 +106,48 @@ jQuery(document).ready(function(){
 	}
 	
 	function makeActive(target){
-	if(target.charAt(0) == "1"){
-		for(var i=0;i<team1.length;i++){
-			if(team1[i].status == "active") {team1[i].status = "inactive"; break;}
+		if(target.charAt(0) == "1"){
+			for(var i=0;i<team1.length;i++){
+				if(team1[i].status == "active") {team1[i].status = "inactive"; break;}
+			}
+			jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
+			team1[target.charCodeAt(1) - 97].status = "active";
+		} else {
+			for(var i=0;i<team2.length;i++){
+				if(team2[i].status == "active") {team2[i].status = "inactive"; break;}
+			}
+			jQuery("#switch2" + String.fromCharCode(i + 97)).attr("disabled",false);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
+			team2[target.charCodeAt(1) - 97].status = "active";
 		}
-		jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
-		team1[target.charCodeAt(1) - 97].status = "active";
-	} else {
-		for(var i=0;i<team2.length;i++){
-			if(team2[i].status == "active") {team2[i].status = "inactive"; break;}
-		}
-		jQuery("#switch2" + String.fromCharCode(i + 97)).attr("disabled",false);
-		team2[target.charCodeAt(1) - 97].status = "active";
+		jQuery("#move" + target + "1").attr("disabled",false);
+		jQuery("#move" + target + "2").attr("disabled",false);
+		jQuery("#move" + target + "3").attr("disabled",false);
+		jQuery("#move" + target + "4").attr("disabled",false);
+		jQuery("#switch" + target).attr("disabled",true);
+		reload();
 	}
-	jQuery("#switch"+target).attr("disabled",true);
-	reload();
-}
+	
+	function getActive(team){
+		var result;
+		if(team == 1){
+			for(var i=0;i<team1.length;i++) {
+				if(team1[i].status == "active") {break;}
+			}
+			result = i;
+		} else {
+			for(var i=0;i<team1.length;i++) {
+				if(team2[i].status == "active") {break;}
+			}
+			result = i;
+		}
+		return result;
+	}
 });
