@@ -17,10 +17,11 @@ jQuery(document).ready(function(){
 	jQuery("#pokemon2f").html(dropdownOptions);
 	var team1 = [];
 	var team2 = [];
+	var readyMove1 = null;
+	var readyMove2 = null;
 	
 	load("1a");	load("1b");	load("1c");	load("1d");	load("1e");	load("1f");
 	load("2a");	load("2b");	load("2c");	load("2d");	load("2e");	load("2f");
-
 
 	jQuery("#pokemon1a").change(function(){load("1a");}); jQuery("#level1a").change(function(){load("1a");}); jQuery("#switch1a").click(function(){makeActive("1a");});
 	jQuery("#pokemon1b").change(function(){load("1b");}); jQuery("#level1b").change(function(){load("1b");}); jQuery("#switch1b").click(function(){makeActive("1b");});
@@ -41,14 +42,20 @@ jQuery(document).ready(function(){
 		for(var i=0;i<allMoves.length;i++){
 			if(allMoves[i].name == move) {
 				if(attacker == "1") {
-					allMoves[i].call(team1[getActive(1)],team2[getActive(2)]);
+					readyMove1 = allMoves[i];
+					if(readyMove2 != null && readyMove2.toString().indexOf("switching") >= 0) {
+						doSwitch();
+					} else if(readyMove2 != null) {doBattle();}
 				} else if(attacker == "2") {
-					allMoves[i].call(team2[getActive(2)],team1[getActive(1)]);
+					readyMove2 = allMoves[i];
+					if(readyMove1 != null && readyMove1.toString().indexOf("switching") >= 0) {
+						doSwitch();
+					} else if(readyMove1 != null) {doBattle();}
 				}
-				reload();
 				break;
 			}
 		}
+		reload();
 	});
 
 	function load(target){
@@ -123,31 +130,46 @@ jQuery(document).ready(function(){
 	
 	function makeActive(target){
 		if(target.charAt(0) == "1"){
-			for(var i=0;i<team1.length;i++){
-				if(team1[i].status == "active") {team1[i].status = "inactive"; break;}
+			if(team1[getActive(1)] != null && team1[getActive(1)].status == "active"){
+				readyMove1 = "switching" + target;
+				if(readyMove2 != null) {doSwitch();}
+			} else {
+				for(var i=0;i<team1.length;i++){
+					if(team1[i].status == "active") {team1[i].status = "inactive"; break;}
+				}
+				jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
+				jQuery("#move1" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
+				jQuery("#move1" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
+				jQuery("#move1" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
+				jQuery("#move1" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
+				team1[target.charCodeAt(1) - 97].status = "active";
+				jQuery("#move" + target + "1").attr("disabled",false);
+				jQuery("#move" + target + "2").attr("disabled",false);
+				jQuery("#move" + target + "3").attr("disabled",false);
+				jQuery("#move" + target + "4").attr("disabled",false);
+				jQuery("#switch" + target).attr("disabled",true);
 			}
-			jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
-			jQuery("#move1" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
-			jQuery("#move1" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
-			jQuery("#move1" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
-			jQuery("#move1" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
-			team1[target.charCodeAt(1) - 97].status = "active";
 		} else {
-			for(var i=0;i<team2.length;i++){
-				if(team2[i].status == "active") {team2[i].status = "inactive"; break;}
+			if(team2[getActive(2)] != null && team2[getActive(2)].status == "active"){
+				readyMove2 = "switching" + target;
+				if(readyMove1 != null) {doSwitch();}
+			} else {
+				for(var i=0;i<team2.length;i++){
+					if(team2[i].status == "active") {team2[i].status = "inactive"; break;}
+				}
+				jQuery("#switch2" + String.fromCharCode(i + 97)).attr("disabled",false);
+				jQuery("#move2" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
+				jQuery("#move2" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
+				jQuery("#move2" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
+				jQuery("#move2" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
+				team2[target.charCodeAt(1) - 97].status = "active";
+				jQuery("#move" + target + "1").attr("disabled",false);
+				jQuery("#move" + target + "2").attr("disabled",false);
+				jQuery("#move" + target + "3").attr("disabled",false);
+				jQuery("#move" + target + "4").attr("disabled",false);
+				jQuery("#switch" + target).attr("disabled",true);
 			}
-			jQuery("#switch2" + String.fromCharCode(i + 97)).attr("disabled",false);
-			jQuery("#move2" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
-			jQuery("#move2" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
-			jQuery("#move2" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
-			jQuery("#move2" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
-			team2[target.charCodeAt(1) - 97].status = "active";
 		}
-		jQuery("#move" + target + "1").attr("disabled",false);
-		jQuery("#move" + target + "2").attr("disabled",false);
-		jQuery("#move" + target + "3").attr("disabled",false);
-		jQuery("#move" + target + "4").attr("disabled",false);
-		jQuery("#switch" + target).attr("disabled",true);
 		reload();
 	}
 	
@@ -165,5 +187,70 @@ jQuery(document).ready(function(){
 			result = i;
 		}
 		return result;
+	}
+	
+	function doBattle(){
+		if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
+			readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
+			if(team2[getActive(2)].status != "fainted") {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+		} else if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) < (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
+			readyMove2.call(team2[getActive(2)],team1[getActive(1)]);
+			if(team1[getActive(1)].status != "fainted") {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+		} else {
+			if(rng(0,1) == 0) {
+				readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
+				if(team2[getActive(2)] != null) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+				} else {
+				readyMove2.call(team2[getActive(2)],team1[getActive(1)]);
+				if(team1[getActive(1)] != null) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+			}
+		}
+		readyMove1 = null;
+		readyMove2 = null;
+	}
+	
+	function doSwitch(){
+		if(readyMove1.toString().indexOf("switching") >= 0){
+			var target = readyMove1.substring(9);
+			for(var i=0;i<team1.length;i++){
+				if(team1[i].status == "active") {team1[i].status = "inactive"; break;}
+			}
+			jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
+			jQuery("#move1" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
+			team1[target.charCodeAt(1) - 97].status = "active";
+			jQuery("#move" + target + "1").attr("disabled",false);
+			jQuery("#move" + target + "2").attr("disabled",false);
+			jQuery("#move" + target + "3").attr("disabled",false);
+			jQuery("#move" + target + "4").attr("disabled",false);
+			jQuery("#switch" + target).attr("disabled",true);
+		}
+		if(readyMove2.toString().indexOf("switching") >= 0){
+			var target = readyMove2.substring(9);
+			for(var i=0;i<team2.length;i++){
+				if(team2[i].status == "active") {team2[i].status = "inactive"; break;}
+			}
+			jQuery("#switch2" + String.fromCharCode(i + 97)).attr("disabled",false);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "2").attr("disabled",true);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
+			jQuery("#move2" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
+			team2[target.charCodeAt(1) - 97].status = "active";
+			jQuery("#move" + target + "1").attr("disabled",false);
+			jQuery("#move" + target + "2").attr("disabled",false);
+			jQuery("#move" + target + "3").attr("disabled",false);
+			jQuery("#move" + target + "4").attr("disabled",false);
+			jQuery("#switch" + target).attr("disabled",true);
+		}
+		if(readyMove1.toString().indexOf("switching") < 0){
+			readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
+		}
+		if(readyMove2.toString().indexOf("switching") < 0){
+			readyMove2.call(team2[getActive(2)],team1[getActive(1)]);
+		}
+		readyMove1 = null;
+		readyMove2 = null;
 	}
 });
