@@ -17,22 +17,23 @@ jQuery(document).ready(function(){
 	jQuery("#pokemon2f").html(dropdownOptions);
 	var team1 = [];
 	var team2 = [];
+	
 	load("1a");	load("1b");	load("1c");	load("1d");	load("1e");	load("1f");
 	load("2a");	load("2b");	load("2c");	load("2d");	load("2e");	load("2f");
 
 
-	jQuery("#pokemon1a").change(function(){load("1a");}); jQuery("#level1a").change(function(){load("1a");});
-	jQuery("#pokemon1b").change(function(){load("1b");}); jQuery("#level1b").change(function(){load("1b");});
-	jQuery("#pokemon1c").change(function(){load("1c");}); jQuery("#level1c").change(function(){load("1c");});
-	jQuery("#pokemon1d").change(function(){load("1d");}); jQuery("#level1d").change(function(){load("1d");});
-	jQuery("#pokemon1e").change(function(){load("1e");}); jQuery("#level1e").change(function(){load("1e");});
-	jQuery("#pokemon1f").change(function(){load("1f");}); jQuery("#level1f").change(function(){load("1f");});
-	jQuery("#pokemon2a").change(function(){load("2a");}); jQuery("#level2a").change(function(){load("2a");});
-	jQuery("#pokemon2b").change(function(){load("2b");}); jQuery("#level2b").change(function(){load("2b");});
-	jQuery("#pokemon2c").change(function(){load("2c");}); jQuery("#level2c").change(function(){load("2c");});
-	jQuery("#pokemon2d").change(function(){load("2d");}); jQuery("#level2d").change(function(){load("2d");});
-	jQuery("#pokemon2e").change(function(){load("2e");}); jQuery("#level2e").change(function(){load("2e");});
-	jQuery("#pokemon2f").change(function(){load("2f");}); jQuery("#level2f").change(function(){load("2f");});
+	jQuery("#pokemon1a").change(function(){load("1a");}); jQuery("#level1a").change(function(){load("1a");}); jQuery("#switch1a").click(function(){makeActive("1a");});
+	jQuery("#pokemon1b").change(function(){load("1b");}); jQuery("#level1b").change(function(){load("1b");}); jQuery("#switch1b").click(function(){makeActive("1b");});
+	jQuery("#pokemon1c").change(function(){load("1c");}); jQuery("#level1c").change(function(){load("1c");}); jQuery("#switch1c").click(function(){makeActive("1c");});
+	jQuery("#pokemon1d").change(function(){load("1d");}); jQuery("#level1d").change(function(){load("1d");}); jQuery("#switch1d").click(function(){makeActive("1d");});
+	jQuery("#pokemon1e").change(function(){load("1e");}); jQuery("#level1e").change(function(){load("1e");}); jQuery("#switch1e").click(function(){makeActive("1e");});
+	jQuery("#pokemon1f").change(function(){load("1f");}); jQuery("#level1f").change(function(){load("1f");}); jQuery("#switch1f").click(function(){makeActive("1f");});
+	jQuery("#pokemon2a").change(function(){load("2a");}); jQuery("#level2a").change(function(){load("2a");}); jQuery("#switch2a").click(function(){makeActive("2a");});
+	jQuery("#pokemon2b").change(function(){load("2b");}); jQuery("#level2b").change(function(){load("2b");}); jQuery("#switch2b").click(function(){makeActive("2b");});
+	jQuery("#pokemon2c").change(function(){load("2c");}); jQuery("#level2c").change(function(){load("2c");}); jQuery("#switch2c").click(function(){makeActive("2c");});
+	jQuery("#pokemon2d").change(function(){load("2d");}); jQuery("#level2d").change(function(){load("2d");}); jQuery("#switch2d").click(function(){makeActive("2d");});
+	jQuery("#pokemon2e").change(function(){load("2e");}); jQuery("#level2e").change(function(){load("2e");}); jQuery("#switch2e").click(function(){makeActive("2e");});
+	jQuery("#pokemon2f").change(function(){load("2f");}); jQuery("#level2f").change(function(){load("2f");}); jQuery("#switch2f").click(function(){makeActive("2f");});
 
 	jQuery(".move").click(function(){
 		var move = jQuery(this).html();
@@ -103,4 +104,18 @@ jQuery(document).ready(function(){
 			if(team2[target.charCodeAt(1) - 97].status == "fainted") {jQuery("#container"+target).removeClass("active"); jQuery("#container"+target).removeClass("inactive"); jQuery("#container"+target).addClass("fainted");}
 		}
 	}
+	
+	function makeActive(target){
+	if(target.charAt(0) == "1"){
+		for(var i=0;i<team1.length;i++){
+			if(team1[i].status == "active") {team1[i].status = "inactive"; break;}
+		}
+		jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
+		team1[target.charCodeAt(1) - 97].status = "active";
+	} else {
+		
+	}
+	jQuery("#switch"+target).attr("disabled",true);
+	reload();
+}
 });
