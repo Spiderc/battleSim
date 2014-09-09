@@ -41,9 +41,9 @@ jQuery(document).ready(function(){
 		for(var i=0;i<allMoves.length;i++){
 			if(allMoves[i].name == move) {
 				if(attacker == "1") {
-					allMoves[i].call(active1,active2);
+					allMoves[i].call(team1[getActive(1)],team2[getActive(2)]);
 				} else if(attacker == "2") {
-					allMoves[i].call(active2,active1);
+					allMoves[i].call(team2[getActive(2)],team1[getActive(1)]);
 				}
 				reload();
 				break;
@@ -95,13 +95,29 @@ jQuery(document).ready(function(){
 
 	function colorContainer(target){
 		if(target.charAt(0) == "1"){
-			if(team1[target.charCodeAt(1) - 97].status == "active") {jQuery("#container"+target).addClass("active"); jQuery("#container"+target).removeClass("inactive"); jQuery("#container"+target).removeClass("fainted");}
-			if(team1[target.charCodeAt(1) - 97].status == "inactive") {jQuery("#container"+target).removeClass("active"); jQuery("#container"+target).addClass("inactive"); jQuery("#container"+target).removeClass("fainted");}
-			if(team1[target.charCodeAt(1) - 97].status == "fainted") {jQuery("#container"+target).removeClass("active"); jQuery("#container"+target).removeClass("inactive"); jQuery("#container"+target).addClass("fainted");}
+			if(team1[target.charCodeAt(1) - 97].status == "active") {jQuery("#container" + target).addClass("active");jQuery("#container" + target).removeClass("inactive");jQuery("#container" + target).removeClass("fainted");}
+			if(team1[target.charCodeAt(1) - 97].status == "inactive") {jQuery("#container" + target).removeClass("active");jQuery("#container" + target).addClass("inactive");jQuery("#container" + target).removeClass("fainted");}
+			if(team1[target.charCodeAt(1) - 97].status == "fainted") {
+				jQuery("#container" + target).removeClass("active");
+				jQuery("#container" + target).removeClass("inactive");
+				jQuery("#container" + target).addClass("fainted");
+				jQuery("#move" + target + "1").attr("disabled",true);
+				jQuery("#move" + target + "2").attr("disabled",true);
+				jQuery("#move" + target + "3").attr("disabled",true);
+				jQuery("#move" + target + "4").attr("disabled",true);
+				}
 		} else {
-			if(team2[target.charCodeAt(1) - 97].status == "active") {jQuery("#container"+target).addClass("active"); jQuery("#container"+target).removeClass("inactive"); jQuery("#container"+target).removeClass("fainted");}
-			if(team2[target.charCodeAt(1) - 97].status == "inactive") {jQuery("#container"+target).removeClass("active"); jQuery("#container"+target).addClass("inactive"); jQuery("#container"+target).removeClass("fainted");}
-			if(team2[target.charCodeAt(1) - 97].status == "fainted") {jQuery("#container"+target).removeClass("active"); jQuery("#container"+target).removeClass("inactive"); jQuery("#container"+target).addClass("fainted");}
+			if(team2[target.charCodeAt(1) - 97].status == "active") {jQuery("#container" + target).addClass("active"); jQuery("#container" + target).removeClass("inactive"); jQuery("#container" + target).removeClass("fainted");}
+			if(team2[target.charCodeAt(1) - 97].status == "inactive") {jQuery("#container" + target).removeClass("active"); jQuery("#container" + target).addClass("inactive"); jQuery("#container" + target).removeClass("fainted");}
+			if(team2[target.charCodeAt(1) - 97].status == "fainted") {
+				jQuery("#container" + target).removeClass("active");
+				jQuery("#container" + target).removeClass("inactive");
+				jQuery("#container" + target).addClass("fainted");
+				jQuery("#move" + target + "1").attr("disabled",true);
+				jQuery("#move" + target + "2").attr("disabled",true);
+				jQuery("#move" + target + "3").attr("disabled",true);
+				jQuery("#move" + target + "4").attr("disabled",true);
+				}
 		}
 	}
 	
