@@ -193,20 +193,21 @@ jQuery(document).ready(function(){
 	
 	function doBattle(){
 		if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
-			readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
-			if(team2[getActive(2)] != null) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+			if(team2[getActive(2)] != null && canAttack(team1[getActive(2)],team2[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
 		} else if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) < (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
-			readyMove2.call(team2[getActive(2)],team1[getActive(1)]);
-			if(team1[getActive(1)] != null) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+			if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
 		} else {
 			if(rng(0,1) == 0) {
-				readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
-				if(team2[getActive(2)] != null) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+				if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+				if(team2[getActive(2)] != null && canAttack(team1[getActive(2)],team2[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
 				} else {
-				readyMove2.call(team2[getActive(2)],team1[getActive(1)]);
-				if(team1[getActive(1)] != null) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+				if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+				if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
 			}
 		}
+		endTurnEffects();
 		readyMove1 = null;
 		readyMove2 = null;
 	}
@@ -215,7 +216,7 @@ jQuery(document).ready(function(){
 		if(readyMove1.toString().indexOf("switching") >= 0){
 			var target = readyMove1.substring(9);
 			for(var i=0;i<team1.length;i++){
-				if(team1[i].status == "active") {team1[i].status = "inactive"; break;}
+				if(team1[i].status == "active") {resetStats(team1[i]); team1[i].status = "inactive"; break;}
 			}
 			jQuery("#switch1" + String.fromCharCode(i + 97)).attr("disabled",false);
 			jQuery("#move1" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
@@ -232,7 +233,7 @@ jQuery(document).ready(function(){
 		if(readyMove2.toString().indexOf("switching") >= 0){
 			var target = readyMove2.substring(9);
 			for(var i=0;i<team2.length;i++){
-				if(team2[i].status == "active") {team2[i].status = "inactive"; break;}
+				if(team2[i].status == "active") {resetStats(team2[i]); team2[i].status = "inactive"; break;}
 			}
 			jQuery("#switch2" + String.fromCharCode(i + 97)).attr("disabled",false);
 			jQuery("#move2" + String.fromCharCode(i + 97) + "1").attr("disabled",true);
@@ -247,11 +248,12 @@ jQuery(document).ready(function(){
 			jQuery("#switch" + target).attr("disabled",true);
 		}
 		if(readyMove1.toString().indexOf("switching") < 0){
-			readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
+			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
 		}
 		if(readyMove2.toString().indexOf("switching") < 0){
-			readyMove2.call(team2[getActive(2)],team1[getActive(1)]);
+			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
 		}
+		endTurnEffects();
 		readyMove1 = null;
 		readyMove2 = null;
 	}
@@ -270,6 +272,8 @@ jQuery(document).ready(function(){
 		jQuery("#pokemon2d").prop("disabled",true); jQuery("#level2d").prop("disabled",true);
 		jQuery("#pokemon2e").prop("disabled",true); jQuery("#level2e").prop("disabled",true);
 		jQuery("#pokemon2f").prop("disabled",true); jQuery("#level2f").prop("disabled",true);
-		
+	}
+	
+	function endTurnEffects(){
 	}
 });

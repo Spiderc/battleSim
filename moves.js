@@ -6,10 +6,13 @@
 	4. Replace the 100 in the attackHit to the move's accuracy
 	5. Change atk and def to be attaker.spcAtk and defender.spcDef if the move is special instead of physical (likewise change atkMod and defMod to spcAtkMod and spcDefMod)
 	6. Replace the type in stab and typeDamage to the move's type
-	7. Change the 50 in the calc damage function to the move's bp
+	7. Change bp to the move's bp
 	8. Implement any other functionality the move has
 	9. Put the function where it belongs in the list alphabetically
-	10. At the bottom of this page, push it into the allMoves array using allMoves.push(new Move(functionName,"Attack Name"));
+	10. At the bottom of this page, push it into the allMoves array using allMoves.push(new Move(functionName,"Attack Name",["property1","property2"]));
+	
+	NOTE: Properties are things that must be taken into account when the move is called and cannot be accounted for purely within the move itself
+		these properties include: "priority","affectedByWeather"
 */
 
 function scratch(attacker,defender){
@@ -19,6 +22,7 @@ function scratch(attacker,defender){
 		var def = defender.def;
 		var stab = stabCalc("normal",attacker);
 		var typeDamage = typeCalc("normal",defender);
+		var bp = 40;
 		var crit = critCalc(0);
 		var other = 1;
 		if(crit != 1){
@@ -28,7 +32,7 @@ function scratch(attacker,defender){
 			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
 			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
 		}
-		var damage = calcDamage(attacker.level,atk,def,40,stab,typeDamage,crit,other);
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
 		addToLog(attacker.name + "'s Scratch hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 	} else {
@@ -43,6 +47,7 @@ function tackle(attacker,defender){
 		var def = defender.def;
 		var stab = stabCalc("normal",attacker);
 		var typeDamage = typeCalc("normal",defender);
+		var bp = 50;
 		var crit = critCalc(0);
 		var other = 1;
 		if(crit != 1){
@@ -52,7 +57,7 @@ function tackle(attacker,defender){
 			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
 			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
 		}
-		var damage = calcDamage(attacker.level,atk,def,50,stab,typeDamage,crit,other);
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
 		addToLog(attacker.name + "'s Tackle hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 	} else {
@@ -67,6 +72,7 @@ function vineWhip(attacker,defender){
 		var def = defender.def;
 		var stab = stabCalc("grass",attacker);
 		var typeDamage = typeCalc("grass",defender);
+		var bp = 45;
 		var crit = critCalc(0);
 		var other = 1;
 		if(crit != 1){
@@ -76,7 +82,7 @@ function vineWhip(attacker,defender){
 			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
 			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
 		}
-		var damage = calcDamage(attacker.level,atk,def,45,stab,typeDamage,crit,other);
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
 		addToLog(attacker.name + "'s Vine Whip hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 	} else {
@@ -85,4 +91,4 @@ function vineWhip(attacker,defender){
 }
 
 var allMoves = [];
-allMoves.push(new move(scratch,"Scratch"));allMoves.push(new move(tackle,"Tackle"));allMoves.push(new move(vineWhip,"Vine Whip"));
+allMoves.push(new move(scratch,"Scratch",[]));allMoves.push(new move(tackle,"Tackle",[]));allMoves.push(new move(vineWhip,"Vine Whip",[]));

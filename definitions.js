@@ -39,9 +39,10 @@ function pokemon(level,species){
 	this.evaMod = 0;
 }
 
-function move(call,name){
+function move(call,name,properties){
 	this.call = call;
 	this.name = name;
+	this.properties = properties;
 }
 
 function levelMove(move,level){
@@ -180,4 +181,18 @@ function getStatMultiplier(mod,acc){
 
 function attackHit(atkAcc,attackerAcc,defenderEva){
 	return (atkAcc * (attackerAcc / defenderEva)) >= rng(1,100);
+}
+
+function canAttack(attacker,defender){
+	return true;
+}
+
+function resetStats(pokemon){
+	pokemon.atkMod = 0;
+	pokemon.defMod = 0;
+	pokemon.spcAtkMod = 0;
+	pokemon.spcDefMod = 0;
+	pokemon.spdMod = 0;
+	pokemon.accMod = 0;
+	pokemon.evaMod = 0;
 }
