@@ -5,7 +5,7 @@
 	3. Put the name of the move in the two log outputs that have the name
 	4. Replace the 100 in the attackHit to the move's accuracy
 	5. Change atk and def to be attaker.spcAtk and defender.spcDef if the move is special instead of physical (likewise change atkMod and defMod to spcAtkMod and spcDefMod)
-	6. Replace the type in stab and typeDamage to the move's type
+	6. Change type to the move's type
 	7. Change bp to the move's bp
 	8. Implement any other functionality the move has
 	9. Put the function where it belongs in the list alphabetically
@@ -20,8 +20,9 @@ function scratch(attacker,defender){
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var atk = attacker.atk;
 		var def = defender.def;
-		var stab = stabCalc("normal",attacker);
-		var typeDamage = typeCalc("normal",defender);
+		var type = "normal";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
 		var bp = 40;
 		var crit = critCalc(0);
 		var other = 1;
@@ -45,8 +46,9 @@ function tackle(attacker,defender){
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var atk = attacker.atk;
 		var def = defender.def;
-		var stab = stabCalc("normal",attacker);
-		var typeDamage = typeCalc("normal",defender);
+		var type = "normal";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
 		var bp = 50;
 		var crit = critCalc(0);
 		var other = 1;
@@ -70,8 +72,9 @@ function vineWhip(attacker,defender){
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var atk = attacker.atk;
 		var def = defender.def;
-		var stab = stabCalc("grass",attacker);
-		var typeDamage = typeCalc("grass",defender);
+		var type = "grass";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
 		var bp = 45;
 		var crit = critCalc(0);
 		var other = 1;
