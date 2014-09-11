@@ -1,5 +1,6 @@
 jQuery(document).ready(function(){
 	var dropdownOptions = "";
+	var teamsLocked = false;
 	for(var i=0;i<allPokemon.length;i++){
 		dropdownOptions = dropdownOptions + "<option>" + allPokemon[i].name + "</option>";
 	}
@@ -39,6 +40,7 @@ jQuery(document).ready(function(){
 	jQuery(".move").click(function(){
 		var move = jQuery(this).html();
 		var attacker = jQuery(this).attr("id").substring(4,5);
+		if(teamsLocked == false) {lockTeams();}
 		for(var i=0;i<allMoves.length;i++){
 			if(allMoves[i].name == move) {
 				if(attacker == "1") {
@@ -86,18 +88,18 @@ jQuery(document).ready(function(){
 	}
 
 	function reload(){
-		jQuery("#hpCurrent1a").html(team1[0].hpCurrent); jQuery("#hpMax1a").html(team1[0].hpMax); colorContainer("1a");
-		jQuery("#hpCurrent1b").html(team1[1].hpCurrent); jQuery("#hpMax1b").html(team1[1].hpMax); colorContainer("1b");
-		jQuery("#hpCurrent1c").html(team1[2].hpCurrent); jQuery("#hpMax1c").html(team1[2].hpMax); colorContainer("1c");
-		jQuery("#hpCurrent1d").html(team1[3].hpCurrent); jQuery("#hpMax1d").html(team1[3].hpMax); colorContainer("1d");
-		jQuery("#hpCurrent1e").html(team1[4].hpCurrent); jQuery("#hpMax1e").html(team1[4].hpMax); colorContainer("1e");
-		jQuery("#hpCurrent1f").html(team1[5].hpCurrent); jQuery("#hpMax1f").html(team1[5].hpMax); colorContainer("1f");
-		jQuery("#hpCurrent2a").html(team2[0].hpCurrent); jQuery("#hpMax2a").html(team2[0].hpMax); colorContainer("2a");
-		jQuery("#hpCurrent2b").html(team2[1].hpCurrent); jQuery("#hpMax2b").html(team2[1].hpMax); colorContainer("2b");
-		jQuery("#hpCurrent2c").html(team2[2].hpCurrent); jQuery("#hpMax2c").html(team2[2].hpMax); colorContainer("2c");
-		jQuery("#hpCurrent2d").html(team2[3].hpCurrent); jQuery("#hpMax2d").html(team2[3].hpMax); colorContainer("2d");
-		jQuery("#hpCurrent2e").html(team2[4].hpCurrent); jQuery("#hpMax2e").html(team2[4].hpMax); colorContainer("2e");
-		jQuery("#hpCurrent2f").html(team2[5].hpCurrent); jQuery("#hpMax2f").html(team2[5].hpMax); colorContainer("2f");
+		jQuery("#hpCurrent1a").html(team1[0].hpCurrent); colorContainer("1a");
+		jQuery("#hpCurrent1b").html(team1[1].hpCurrent); colorContainer("1b");
+		jQuery("#hpCurrent1c").html(team1[2].hpCurrent); colorContainer("1c");
+		jQuery("#hpCurrent1d").html(team1[3].hpCurrent); colorContainer("1d");
+		jQuery("#hpCurrent1e").html(team1[4].hpCurrent); colorContainer("1e");
+		jQuery("#hpCurrent1f").html(team1[5].hpCurrent); colorContainer("1f");
+		jQuery("#hpCurrent2a").html(team2[0].hpCurrent); colorContainer("2a");
+		jQuery("#hpCurrent2b").html(team2[1].hpCurrent); colorContainer("2b");
+		jQuery("#hpCurrent2c").html(team2[2].hpCurrent); colorContainer("2c");
+		jQuery("#hpCurrent2d").html(team2[3].hpCurrent); colorContainer("2d");
+		jQuery("#hpCurrent2e").html(team2[4].hpCurrent); colorContainer("2e");
+		jQuery("#hpCurrent2f").html(team2[5].hpCurrent); colorContainer("2f");
 	}
 
 	function colorContainer(target){
@@ -192,10 +194,10 @@ jQuery(document).ready(function(){
 	function doBattle(){
 		if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
 			readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
-			if(team2[getActive(2)].status != "fainted") {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+			if(team2[getActive(2)] != null) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
 		} else if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) < (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
 			readyMove2.call(team2[getActive(2)],team1[getActive(1)]);
-			if(team1[getActive(1)].status != "fainted") {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+			if(team1[getActive(1)] != null) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
 		} else {
 			if(rng(0,1) == 0) {
 				readyMove1.call(team1[getActive(1)],team2[getActive(2)]);
@@ -252,5 +254,22 @@ jQuery(document).ready(function(){
 		}
 		readyMove1 = null;
 		readyMove2 = null;
+	}
+	
+	function lockTeams(){
+		teamsLocked = true;
+		jQuery("#pokemon1a").prop("disabled",true); jQuery("#level1a").prop("disabled",true);
+		jQuery("#pokemon1b").prop("disabled",true); jQuery("#level1b").prop("disabled",true);
+		jQuery("#pokemon1c").prop("disabled",true); jQuery("#level1c").prop("disabled",true);
+		jQuery("#pokemon1d").prop("disabled",true); jQuery("#level1d").prop("disabled",true);
+		jQuery("#pokemon1e").prop("disabled",true); jQuery("#level1e").prop("disabled",true);
+		jQuery("#pokemon1f").prop("disabled",true); jQuery("#level1f").prop("disabled",true);
+		jQuery("#pokemon2a").prop("disabled",true); jQuery("#level2a").prop("disabled",true);
+		jQuery("#pokemon2b").prop("disabled",true); jQuery("#level2b").prop("disabled",true);
+		jQuery("#pokemon2c").prop("disabled",true); jQuery("#level2c").prop("disabled",true);
+		jQuery("#pokemon2d").prop("disabled",true); jQuery("#level2d").prop("disabled",true);
+		jQuery("#pokemon2e").prop("disabled",true); jQuery("#level2e").prop("disabled",true);
+		jQuery("#pokemon2f").prop("disabled",true); jQuery("#level2f").prop("disabled",true);
+		
 	}
 });
