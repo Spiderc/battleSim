@@ -15,6 +15,20 @@
 		these properties include: "priority","affectedByWeather"
 */
 
+function growl(attacker,defender){
+	addToLog(attacker.name + " used Growl on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		if(defender.atkMod > -6) {
+			defender.atkMod = defender.atkMod - 1;
+			addToLog(defender.name + "'s attack fell!");
+		} else {
+			addToLog(defender.name + "'s attack won't go any lower!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function scratch(attacker,defender){
 	addToLog(attacker.name + " used Scratch on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -26,7 +40,7 @@ function scratch(attacker,defender){
 		var bp = 40;
 		var crit = critCalc(0);
 		var other = 1;
-		if(crit != 1){
+		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
 			def = def * getStatMultiplier(defender.defMod,false);
 		} else {
@@ -52,7 +66,7 @@ function tackle(attacker,defender){
 		var bp = 50;
 		var crit = critCalc(0);
 		var other = 1;
-		if(crit != 1){
+		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
 			def = def * getStatMultiplier(defender.defMod,false);
 		} else {
@@ -78,7 +92,7 @@ function vineWhip(attacker,defender){
 		var bp = 45;
 		var crit = critCalc(0);
 		var other = 1;
-		if(crit != 1){
+		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
 			def = def * getStatMultiplier(defender.defMod,false);
 		} else {
@@ -94,4 +108,5 @@ function vineWhip(attacker,defender){
 }
 
 var allMoves = [];
-allMoves.push(new move(scratch,"Scratch",[]));allMoves.push(new move(tackle,"Tackle",[]));allMoves.push(new move(vineWhip,"Vine Whip",[]));
+allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
+allMoves.push(new move(growl,"Growl",[]));
