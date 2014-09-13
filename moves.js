@@ -81,6 +81,20 @@ function tackle(attacker,defender){
 	}
 }
 
+function tailWhip(attacker,defender){
+	addToLog(attacker.name + " used Tail Whip on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		if(defender.defMod > -6) {
+			defender.defMod = defender.defMod - 1;
+			addToLog(defender.name + "'s defence fell!");
+		} else {
+			addToLog(defender.name + "'s defence won't go any lower!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function vineWhip(attacker,defender){
 	addToLog(attacker.name + " used Vine Whip on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -108,5 +122,5 @@ function vineWhip(attacker,defender){
 }
 
 var allMoves = [];
-allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
-allMoves.push(new move(growl,"Growl",[]));
+allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[]));
+allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
