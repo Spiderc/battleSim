@@ -81,6 +81,7 @@ jQuery(document).ready(function(){
 			jQuery("#hpCurrent" + target).html(team2[target.charCodeAt(1) - 97].hpCurrent);
 			jQuery("#hpMax" + target).html(team2[target.charCodeAt(1) - 97].hpMax);
 		}
+		jQuery("#sprite" + target).attr("src","http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(jQuery("#pokemon" + target).val()).dex) + ".png");
 		colorContainer(target);
 		if(jQuery("#move" + target + "2").html() == "") {jQuery("#move" + target + "2").hide();} else {jQuery("#move" + target + "2").show();}
 		if(jQuery("#move" + target + "3").html() == "") {jQuery("#move" + target + "3").hide();} else {jQuery("#move" + target + "3").show();}

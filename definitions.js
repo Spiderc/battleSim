@@ -196,3 +196,12 @@ function resetStats(pokemon){
 	pokemon.accMod = 0;
 	pokemon.evaMod = 0;
 }
+
+function addZeros(integer){
+	if(integer < 10) {
+		integer = "00" + integer;
+	} else if(integer < 100){
+		integer = "0" + integer;
+	}
+	return integer;
+}
