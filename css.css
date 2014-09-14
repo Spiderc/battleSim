@@ -17,3 +17,8 @@ td.inactive{
 td.fainted{
 	background-color: red;
 }
+
+div.battleLog{
+	overflow:scroll;
+	height:250px;
+}

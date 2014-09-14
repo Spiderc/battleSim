@@ -52,6 +52,7 @@ function levelMove(move,level){
 
 function addToLog(message){
 	jQuery("#battleLog").html(jQuery("#battleLog").html() + "<br/>" + message);
+	jQuery("#lastTurnLog").html(jQuery("#lastTurnLog").html() + "<br/>" + message);
 }
 
 function stabCalc(attack,attacker){

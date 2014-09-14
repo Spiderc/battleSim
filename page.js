@@ -146,6 +146,7 @@ jQuery(document).ready(function(){
 				jQuery("#move1" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
 				jQuery("#move1" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
 				team1[target.charCodeAt(1) - 97].status = "active";
+				addToLog(team1[target.charCodeAt(1) - 97].name + " was sent out!");
 				jQuery("#move" + target + "1").attr("disabled",false);
 				jQuery("#move" + target + "2").attr("disabled",false);
 				jQuery("#move" + target + "3").attr("disabled",false);
@@ -166,6 +167,7 @@ jQuery(document).ready(function(){
 				jQuery("#move2" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
 				jQuery("#move2" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
 				team2[target.charCodeAt(1) - 97].status = "active";
+				addToLog(team2[target.charCodeAt(1) - 97].name + " was sent out!");
 				jQuery("#move" + target + "1").attr("disabled",false);
 				jQuery("#move" + target + "2").attr("disabled",false);
 				jQuery("#move" + target + "3").attr("disabled",false);
@@ -193,6 +195,7 @@ jQuery(document).ready(function(){
 	}
 	
 	function doBattle(){
+		beforeTurnEffects();
 		if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
 			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
 			if(team2[getActive(2)] != null && canAttack(team1[getActive(2)],team2[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
@@ -214,6 +217,7 @@ jQuery(document).ready(function(){
 	}
 	
 	function doSwitch(){
+		beforeTurnEffects();
 		if(readyMove1.toString().indexOf("switching") >= 0){
 			var target = readyMove1.substring(9);
 			for(var i=0;i<team1.length;i++){
@@ -225,6 +229,7 @@ jQuery(document).ready(function(){
 			jQuery("#move1" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
 			jQuery("#move1" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
 			team1[target.charCodeAt(1) - 97].status = "active";
+			addToLog(team1[target.charCodeAt(1) - 97].name + " was sent out!");
 			jQuery("#move" + target + "1").attr("disabled",false);
 			jQuery("#move" + target + "2").attr("disabled",false);
 			jQuery("#move" + target + "3").attr("disabled",false);
@@ -242,6 +247,7 @@ jQuery(document).ready(function(){
 			jQuery("#move2" + String.fromCharCode(i + 97) + "3").attr("disabled",true);
 			jQuery("#move2" + String.fromCharCode(i + 97) + "4").attr("disabled",true);
 			team2[target.charCodeAt(1) - 97].status = "active";
+			addToLog(team2[target.charCodeAt(1) - 97].name + " was sent out!");
 			jQuery("#move" + target + "1").attr("disabled",false);
 			jQuery("#move" + target + "2").attr("disabled",false);
 			jQuery("#move" + target + "3").attr("disabled",false);
@@ -273,6 +279,10 @@ jQuery(document).ready(function(){
 		jQuery("#pokemon2d").prop("disabled",true); jQuery("#level2d").prop("disabled",true);
 		jQuery("#pokemon2e").prop("disabled",true); jQuery("#level2e").prop("disabled",true);
 		jQuery("#pokemon2f").prop("disabled",true); jQuery("#level2f").prop("disabled",true);
+	}
+	
+	function beforeTurnEffects(){
+		jQuery("#lastTurnLog").html("");
 	}
 	
 	function endTurnEffects(){
