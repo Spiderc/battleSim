@@ -37,6 +37,7 @@ function pokemon(level,species){
 	this.spdMod = 0;
 	this.accMod = 0;
 	this.evaMod = 0;
+	this.conditions = [];
 }
 
 function move(call,name,properties){
@@ -196,6 +197,7 @@ function resetStats(pokemon){
 	pokemon.spdMod = 0;
 	pokemon.accMod = 0;
 	pokemon.evaMod = 0;
+	pokemon.conditions = [];
 }
 
 function addZeros(integer){
@@ -205,4 +207,25 @@ function addZeros(integer){
 		integer = "0" + integer;
 	}
 	return integer;
+}
+
+function checkConditions(activeChecked,otherActive){
+	var damage;
+	if(hasCondition(activeChecked,"seeded") && otherActive != null){
+		damage = Math.ceil(activeChecked.hpMax/8);
+		activeChecked.hpCurrent = activeChecked.hpCurrent - damage;
+		addToLog(activeChecked.name + " health dropped by " + damage + " from Leech Seed.");
+		if(activeChecked.hpCurrent < 1) {activeChecked.hpCurrent = 0; activeChecked.status = "fainted"; addToLog(activeChecked.name + " fainted.");}
+		otherActive.hpCurrent = otherActive.hpCurrent + damage;
+		addToLog(otherActive.name + " health restored " + damage + " from Leech Seed.");
+		if(otherActive.hpCurrent > otherActive.hpMax) {otherActive.hpCurrent = otherActive.hpMax;}
+	}
+}
+
+function hasCondition(pokemon,condition){
+	var result = false;
+	for(var i=0;i<pokemon.conditions.length;i++){
+		if(pokemon.conditions[i] == condition) {result = true;}
+	}
+	return result;
 }

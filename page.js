@@ -20,7 +20,7 @@ jQuery(document).ready(function(){
 	var team2 = [];
 	var readyMove1 = null;
 	var readyMove2 = null;
-	
+
 	load("1a");	load("1b");	load("1c");	load("1d");	load("1e");	load("1f");
 	load("2a");	load("2b");	load("2c");	load("2d");	load("2e");	load("2f");
 
@@ -130,7 +130,7 @@ jQuery(document).ready(function(){
 				}
 		}
 	}
-	
+
 	function makeActive(target){
 		if(target.charAt(0) == "1"){
 			if(team1[getActive(1)] != null && team1[getActive(1)].status == "active"){
@@ -177,7 +177,7 @@ jQuery(document).ready(function(){
 		}
 		reload();
 	}
-	
+
 	function getActive(team){
 		var result;
 		if(team == 1){
@@ -193,7 +193,7 @@ jQuery(document).ready(function(){
 		}
 		return result;
 	}
-	
+
 	function doBattle(){
 		beforeTurnEffects();
 		if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
@@ -215,7 +215,7 @@ jQuery(document).ready(function(){
 		readyMove1 = null;
 		readyMove2 = null;
 	}
-	
+
 	function doSwitch(){
 		beforeTurnEffects();
 		if(readyMove1.toString().indexOf("switching") >= 0){
@@ -264,7 +264,7 @@ jQuery(document).ready(function(){
 		readyMove1 = null;
 		readyMove2 = null;
 	}
-	
+
 	function lockTeams(){
 		teamsLocked = true;
 		jQuery("#pokemon1a").prop("disabled",true); jQuery("#level1a").prop("disabled",true);
@@ -280,11 +280,24 @@ jQuery(document).ready(function(){
 		jQuery("#pokemon2e").prop("disabled",true); jQuery("#level2e").prop("disabled",true);
 		jQuery("#pokemon2f").prop("disabled",true); jQuery("#level2f").prop("disabled",true);
 	}
-	
+
 	function beforeTurnEffects(){
 		jQuery("#lastTurnLog").html("");
 	}
-	
+
 	function endTurnEffects(){
+		if(team1[getActive(1)] != null && team2[getActive(2)] != null){
+			if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
+				checkConditions(team1[getActive(1)],team2[getActive(2)]);
+				if(team2[getActive(2)] != null) {checkConditions(team2[getActive(2)],team1[getActive(1)]);}
+			} else {
+				checkConditions(team2[getActive(2)],team1[getActive(1)]);
+				if(team1[getActive(1)] != null) {checkConditions(team1[getActive(1)],team2[getActive(2)]);}
+			}
+		} else if(team1[getActive(1)] != null && team2[getActive(2)] == null){
+			checkConditions(team1[getActive(1)],null);
+		} else if(team1[getActive(1)] == null && team2[getActive(2)] != null){
+			checkConditions(team2[getActive(2)],null);
+		}
 	}
 });

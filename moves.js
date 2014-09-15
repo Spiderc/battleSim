@@ -10,10 +10,24 @@
 	8. Implement any other functionality the move has
 	9. Put the function where it belongs in the list alphabetically
 	10. At the bottom of this page, push it into the allMoves array using allMoves.push(new Move(functionName,"Attack Name",["property1","property2"]));
-	
+
 	NOTE: Properties are things that must be taken into account when the move is called and cannot be accounted for purely within the move itself
 		these properties include: "priority","affectedByWeather"
 */
+
+function leechSeed(attacker,defender){
+	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
+	if(attackHit(90,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		if(defender.type1 == "grass" || defender.type2 == "grass" || hasCondition(defender,"seeded")) {
+			addToLog("But it had no effect.");
+		} else {
+			defender.conditions.push("seeded");
+			addToLog(defender.name + " was seeded!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
 
 function growl(attacker,defender){
 	addToLog(attacker.name + " used Growl on " + defender.name + ".");
@@ -122,5 +136,5 @@ function vineWhip(attacker,defender){
 }
 
 var allMoves = [];
-allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[]));
+allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[]));
 allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
