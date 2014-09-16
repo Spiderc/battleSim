@@ -4,7 +4,7 @@
 	2. Change the name of the function
 	3. Put the name of the move in the two log outputs that have the name
 	4. Replace the 100 in the attackHit to the move's accuracy
-	5. Change atk and def to be attaker.spcAtk and defender.spcDef if the move is special instead of physical (likewise change atkMod and defMod to spcAtkMod and spcDefMod)
+	5. Change atk and def to be attaker.spcAtk and defender.spcDef if the move is special instead of physical (likewise change atkMod and defMod to spcAtkMod and spcDefMod). Also remove the burn check if it's a special move
 	6. Change type to the move's type
 	7. Change bp to the move's bp
 	8. Implement any other functionality the move has
@@ -12,8 +12,38 @@
 	10. At the bottom of this page, push it into the allMoves array using allMoves.push(new Move(functionName,"Attack Name",["property1","property2"]));
 
 	NOTE: Properties are things that must be taken into account when the move is called and cannot be accounted for purely within the move itself
-		these properties include: "priority","affectedByWeather"
+		these properties include: "priority"
 */
+
+function ember(attacker,defender,battleState){
+	addToLog(attacker.name + " used Ember on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.spcAtk;
+		var def = defender.spcDef;
+		var type = "fire";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 40;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
+			def = def * getStatMultiplier(defender.spcDefMod,false);
+		} else {
+			if(getStatMultiplier(attacker.spcAtkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.spcAtkMod,false);}
+			if(getStatMultiplier(defender.spcDefMod,false) < 1) {def = def * getStatMultiplier(defender.spcDefMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		addToLog(attacker.name + "'s Ember hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+		if(10 >= rng(1,100) && defender.status != "fainted" && defender.type1 != "fire" && defender.type2 != "fire" && defender.affliction == null){
+			defender.affliction = new affliction("burn",-1);
+			addToLog(defender.name + " was burned by the attack.");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
 
 function leechSeed(attacker,defender,battleState){
 	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
@@ -62,6 +92,7 @@ function scratch(attacker,defender,battleState){
 			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
 		}
 		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
 		addToLog(attacker.name + "'s Scratch hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 	} else {
@@ -88,6 +119,7 @@ function tackle(attacker,defender,battleState){
 			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
 		}
 		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
 		addToLog(attacker.name + "'s Tackle hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 	} else {
@@ -128,6 +160,7 @@ function vineWhip(attacker,defender,battleState){
 			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
 		}
 		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
 		addToLog(attacker.name + "'s Vine Whip hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 	} else {
@@ -136,5 +169,6 @@ function vineWhip(attacker,defender,battleState){
 }
 
 var allMoves = [];
-allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[]));
+allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
+allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[]));
 allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));

@@ -2,7 +2,7 @@ function rng(min,max){
 	return Math.floor(Math.random() * (max - min + 1))+min;
 }
 
-function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcatk,spcdef,spd,learnset){
+function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcAtk,spcDef,spd,learnset){
 	this.dex = dex;
 	this.name = name;
 	this.type1 = type1;
@@ -10,8 +10,8 @@ function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcatk,spcdef,spd,learns
 	this.hp = hp;
 	this.atk = atk;
 	this.def = def;
-	this.spcatk = spcatk;
-	this.spcdef = spcdef;
+	this.spcAtk = spcAtk;
+	this.spcDef = spcDef;
 	this.spd = spd;
 	this.learnset = learnset;
 	}
@@ -25,8 +25,8 @@ function pokemon(level,species){
 	this.hpCurrent = this.hpMax;
 	this.atk = Math.floor((((species.atk * 2) * level) / 100) + 5);
 	this.def = Math.floor((((species.def * 2) * level) / 100) + 5);
-	this.spcatk = Math.floor((((species.spcatk * 2) * level) / 100) + 5);
-	this.spcdef = Math.floor((((species.spcdef * 2) * level) / 100) + 5);
+	this.spcAtk = Math.floor((((species.spcAtk * 2) * level) / 100) + 5);
+	this.spcDef = Math.floor((((species.spcDef * 2) * level) / 100) + 5);
 	this.spd = Math.floor((((species.spd * 2) * level) / 100) + 5);
 	this.status = null;
 	this.moves = getMoves(level,species);
@@ -38,6 +38,7 @@ function pokemon(level,species){
 	this.accMod = 0;
 	this.evaMod = 0;
 	this.conditions = [];
+	this.affliction = null;
 }
 
 function move(call,name,properties){
@@ -49,6 +50,11 @@ function move(call,name,properties){
 function levelMove(move,level){
 	this.move = move;
 	this.level = level;
+}
+
+function affliction(name,duration){
+	this.name = name;
+	this.duration = duration;
 }
 
 function addToLog(message){
@@ -212,14 +218,19 @@ function addZeros(integer){
 function checkConditions(activeChecked,otherActive){
 	var damage;
 	if(hasCondition(activeChecked,"seeded") && otherActive != null){
-		damage = Math.floor(activeChecked.hpMax/8);
-		if(damage = 0) {damage = 1;}
+		damage = Math.max(Math.floor(activeChecked.hpMax/8),1);
 		activeChecked.hpCurrent = activeChecked.hpCurrent - damage;
-		addToLog(activeChecked.name + " health dropped by " + damage + " from Leech Seed.");
+		addToLog(activeChecked.name + " took " + damage + " damage from Leech Seed.");
 		if(activeChecked.hpCurrent < 1) {activeChecked.hpCurrent = 0; activeChecked.status = "fainted"; addToLog(activeChecked.name + " fainted.");}
 		otherActive.hpCurrent = otherActive.hpCurrent + damage;
-		addToLog(otherActive.name + " health restored " + damage + " from Leech Seed.");
+		addToLog(otherActive.name + " restored " + damage + " health from Leech Seed.");
 		if(otherActive.hpCurrent > otherActive.hpMax) {otherActive.hpCurrent = otherActive.hpMax;}
+	}
+	if(hasAffliction(activeChecked,"burn")){
+		damage = Math.max(Math.floor(activeChecked.hpMax/8),1);
+		activeChecked.hpCurrent = activeChecked.hpCurrent - damage;
+		addToLog(activeChecked.name + " took " + damage + " damage from its burn.");
+		if(activeChecked.hpCurrent < 1) {activeChecked.hpCurrent = 0; activeChecked.status = "fainted"; addToLog(activeChecked.name + " fainted.");}
 	}
 }
 
@@ -228,6 +239,13 @@ function hasCondition(pokemon,condition){
 	for(var i=0;i<pokemon.conditions.length;i++){
 		if(pokemon.conditions[i] == condition) {result = true;}
 	}
+	return result;
+}
+
+function hasAffliction(pokemon,affliction){
+	var result = false;
+	console.log(pokemon.affliction);
+	if(pokemon.affliction != null && pokemon.affliction.name == affliction) {result = true;}
 	return result;
 }
 
