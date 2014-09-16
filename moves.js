@@ -24,6 +24,8 @@ function ember(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 40;
+		if(hasState(battleState,"sun")) {bp = bp * 1.5;}
+		if(hasState(battleState,"rain")) {bp = bp * 2/3;}
 		var crit = critCalc(0);
 		var other = 1;
 		if(crit == 1){
@@ -48,6 +50,7 @@ function ember(attacker,defender,battleState){
 function leechSeed(attacker,defender,battleState){
 	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
 	if(attackHit(90,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "grass";
 		if(defender.type1 == "grass" || defender.type2 == "grass" || hasCondition(defender,"seeded")) {
 			addToLog("But it had no effect.");
 		} else {
@@ -62,6 +65,7 @@ function leechSeed(attacker,defender,battleState){
 function growl(attacker,defender,battleState){
 	addToLog(attacker.name + " used Growl on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "normal";
 		if(defender.atkMod > -6) {
 			defender.atkMod = defender.atkMod - 1;
 			addToLog(defender.name + "'s attack fell!");
@@ -130,6 +134,7 @@ function tackle(attacker,defender,battleState){
 function tailWhip(attacker,defender,battleState){
 	addToLog(attacker.name + " used Tail Whip on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "normal";
 		if(defender.defMod > -6) {
 			defender.defMod = defender.defMod - 1;
 			addToLog(defender.name + "'s defence fell!");

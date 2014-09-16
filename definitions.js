@@ -244,7 +244,6 @@ function hasCondition(pokemon,condition){
 
 function hasAffliction(pokemon,affliction){
 	var result = false;
-	console.log(pokemon.affliction);
 	if(pokemon.affliction != null && pokemon.affliction.name == affliction) {result = true;}
 	return result;
 }
