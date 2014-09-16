@@ -212,7 +212,8 @@ function addZeros(integer){
 function checkConditions(activeChecked,otherActive){
 	var damage;
 	if(hasCondition(activeChecked,"seeded") && otherActive != null){
-		damage = Math.ceil(activeChecked.hpMax/8);
+		damage = Math.floor(activeChecked.hpMax/8);
+		if(damage = 0) {damage = 1;}
 		activeChecked.hpCurrent = activeChecked.hpCurrent - damage;
 		addToLog(activeChecked.name + " health dropped by " + damage + " from Leech Seed.");
 		if(activeChecked.hpCurrent < 1) {activeChecked.hpCurrent = 0; activeChecked.status = "fainted"; addToLog(activeChecked.name + " fainted.");}
@@ -226,6 +227,14 @@ function hasCondition(pokemon,condition){
 	var result = false;
 	for(var i=0;i<pokemon.conditions.length;i++){
 		if(pokemon.conditions[i] == condition) {result = true;}
+	}
+	return result;
+}
+
+function hasState(battleState,state){
+	var result = false;
+	for(var i=0;i<battleState.length;i++){
+		if(battleState[i].indexOf(state) > 0) {result = true;}
 	}
 	return result;
 }

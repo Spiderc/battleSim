@@ -1,6 +1,7 @@
 jQuery(document).ready(function(){
 	var dropdownOptions = "";
 	var teamsLocked = false;
+	var battleState = [];
 	for(var i=0;i<allPokemon.length;i++){
 		dropdownOptions = dropdownOptions + "<option>" + allPokemon[i].name + "</option>";
 	}
@@ -197,18 +198,18 @@ jQuery(document).ready(function(){
 	function doBattle(){
 		beforeTurnEffects();
 		if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
-			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
-			if(team2[getActive(2)] != null && canAttack(team1[getActive(2)],team2[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2),battleState]);}
+			if(team2[getActive(2)] != null && canAttack(team1[getActive(2)],team2[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
 		} else if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) < (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
-			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
-			if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1),battleState]);}
+			if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
 		} else {
 			if(rng(0,1) == 0) {
-				if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
-				if(team2[getActive(2)] != null && canAttack(team1[getActive(2)],team2[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+				if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
+				if(team2[getActive(2)] != null && canAttack(team1[getActive(2)],team2[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
 				} else {
-				if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
-				if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+				if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
+				if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
 			}
 		}
 		endTurnEffects();
@@ -255,10 +256,10 @@ jQuery(document).ready(function(){
 			jQuery("#switch" + target).attr("disabled",true);
 		}
 		if(readyMove1.toString().indexOf("switching") < 0){
-			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)]);}
+			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
 		}
 		if(readyMove2.toString().indexOf("switching") < 0){
-			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)]);}
+			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
 		}
 		endTurnEffects();
 		readyMove1 = null;

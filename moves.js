@@ -15,7 +15,7 @@
 		these properties include: "priority","affectedByWeather"
 */
 
-function leechSeed(attacker,defender){
+function leechSeed(attacker,defender,battleState){
 	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
 	if(attackHit(90,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		if(defender.type1 == "grass" || defender.type2 == "grass" || hasCondition(defender,"seeded")) {
@@ -29,7 +29,7 @@ function leechSeed(attacker,defender){
 	}
 }
 
-function growl(attacker,defender){
+function growl(attacker,defender,battleState){
 	addToLog(attacker.name + " used Growl on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		if(defender.atkMod > -6) {
@@ -43,7 +43,7 @@ function growl(attacker,defender){
 	}
 }
 
-function scratch(attacker,defender){
+function scratch(attacker,defender,battleState){
 	addToLog(attacker.name + " used Scratch on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var atk = attacker.atk;
@@ -69,7 +69,7 @@ function scratch(attacker,defender){
 	}
 }
 
-function tackle(attacker,defender){
+function tackle(attacker,defender,battleState){
 	addToLog(attacker.name + " used Tackle on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var atk = attacker.atk;
@@ -95,7 +95,7 @@ function tackle(attacker,defender){
 	}
 }
 
-function tailWhip(attacker,defender){
+function tailWhip(attacker,defender,battleState){
 	addToLog(attacker.name + " used Tail Whip on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		if(defender.defMod > -6) {
@@ -109,7 +109,7 @@ function tailWhip(attacker,defender){
 	}
 }
 
-function vineWhip(attacker,defender){
+function vineWhip(attacker,defender,battleState){
 	addToLog(attacker.name + " used Vine Whip on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var atk = attacker.atk;
