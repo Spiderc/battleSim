@@ -77,6 +77,21 @@ function growl(attacker,defender,battleState){
 	}
 }
 
+function poisonPowder(attacker,defender,battleState){
+	addToLog(attacker.name + " used Poison Powder on " + defender.name + ".");
+	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "poison";
+		if(defender.type1 == "grass" || defender.type2 == "grass" || defender.type1 == "poison" || defender.type2 == "poison" || defender.type1 == "steel" || defender.type2 == "steel" || defender.affliction != null) {
+			addToLog("But it had no effect.");
+		} else {
+			defender.affliction = new affliction("poison",-1);
+			addToLog(defender.name + " was poisoned!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function scratch(attacker,defender,battleState){
 	addToLog(attacker.name + " used Scratch on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -99,6 +114,21 @@ function scratch(attacker,defender,battleState){
 		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
 		addToLog(attacker.name + "'s Scratch hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function sleepPowder(attacker,defender,battleState){
+	addToLog(attacker.name + " used Sleep Powder on " + defender.name + ".");
+	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "grass";
+		if(defender.type1 == "grass" || defender.type2 == "grass" || defender.affliction != null) {
+			addToLog("But it had no effect.");
+		} else {
+			defender.affliction = new affliction("sleep",rng(1,3));
+			addToLog(defender.name + " fell asleep!");
+		}
 	} else {
 		addToLog("But it missed.");
 	}
@@ -175,5 +205,7 @@ function vineWhip(attacker,defender,battleState){
 
 var allMoves = [];
 allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
-allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(tackle,"Tackle",[]));
+allMoves.push(new move(poisonPowder,"Poison Powder",[]));
+allMoves.push(new move(scratch,"Scratch",[]));
+allMoves.push(new move(sleepPowder,"Sleep Powder",[])); allMoves.push(new move(tackle,"Tackle",[]));
 allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));

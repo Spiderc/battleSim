@@ -192,7 +192,18 @@ function attackHit(atkAcc,attackerAcc,defenderEva){
 }
 
 function canAttack(attacker,defender){
-	return true;
+	var result = true;
+	if(hasAffliction(attacker,"sleep")){
+		attacker.affliction.duration = attacker.affliction.duration - 1;
+		if(attacker.affliction.duration < 1){
+			attacker.affliction = null;
+			addToLog(attacker.name + " woke up!");
+		} else {
+			addToLog(attacker.name + " is fast asleep.");
+			result = false;
+		}
+	}
+	return result;
 }
 
 function resetStats(pokemon){
@@ -231,6 +242,12 @@ function checkConditions(activeChecked,otherActive){
 		activeChecked.hpCurrent = activeChecked.hpCurrent - damage;
 		addToLog(activeChecked.name + " took " + damage + " damage from its burn.");
 		if(activeChecked.hpCurrent < 1) {activeChecked.hpCurrent = 0; activeChecked.status = "fainted"; addToLog(activeChecked.name + " fainted.");}
+	}
+	if(hasAffliction(activeChecked,"poison")){
+			damage = Math.max(Math.floor(activeChecked.hpMax/8),1);
+			activeChecked.hpCurrent = activeChecked.hpCurrent - damage;
+			addToLog(activeChecked.name + " took " + damage + " damage from its poisoning.");
+			if(activeChecked.hpCurrent < 1) {activeChecked.hpCurrent = 0; activeChecked.status = "fainted"; addToLog(activeChecked.name + " fainted.");}
 	}
 }
 
