@@ -2,6 +2,7 @@ jQuery(document).ready(function(){
 	var dropdownOptions = "";
 	var teamsLocked = false;
 	var battleState = [];
+	var turnCounter = 0;
 	for(var i=0;i<allPokemon.length;i++){
 		dropdownOptions = dropdownOptions + "<option>" + allPokemon[i].name + "</option>";
 	}
@@ -284,6 +285,8 @@ jQuery(document).ready(function(){
 
 	function beforeTurnEffects(){
 		jQuery("#lastTurnLog").html("");
+		turnCounter = turnCounter + 1;
+		jQuery("#battleLog").html(jQuery("#battleLog").html() + "<hr class='turn" + (turnCounter - 1) % 2 + "'>");
 	}
 
 	function endTurnEffects(){
