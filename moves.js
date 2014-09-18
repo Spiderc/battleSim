@@ -15,6 +15,58 @@
 		these properties include: "priority"
 */
 
+function bubble(attacker,defender,battleState){
+	addToLog(attacker.name + " used Bubble on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.spcAtk;
+		var def = defender.spcDef;
+		var type = "water";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 40;
+		if(hasState(battleState,"rain")) {bp = bp * 1.5;}
+		if(hasState(battleState,"sun")) {bp = bp * 2/3;}
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
+			def = def * getStatMultiplier(defender.spcDefMod,false);
+		} else {
+			if(getStatMultiplier(attacker.spcAtkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.spcAtkMod,false);}
+			if(getStatMultiplier(defender.spcDefMod,false) < 1) {def = def * getStatMultiplier(defender.spcDefMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		addToLog(attacker.name + "'s Bubble hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+		if(10 >= rng(1,100) && defender.status != "fainted"){
+			if(defender.spdMod > -6) {
+				defender.spdMod = defender.spdMod - 1;
+				addToLog(defender.name + "'s speed fell!");
+			} else {
+				addToLog(defender.name + "'s speed won't go any lower!");
+			}
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function dragonRage(attacker,defender,battleState){
+	addToLog(attacker.name + " used Dragon Rage on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "dragon";
+		var damage = 40;
+		if(defender.type1 == "fairy" || defender.type2 == "fairy") {
+			addToLog("But it had no effect.");
+		} else {
+			addToLog(attacker.name + "'s Tackle hit " + defender.name + " for " + damage + " damage.");
+			dealDamage(defender,damage);
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function ember(attacker,defender,battleState){
 	addToLog(attacker.name + " used Ember on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -134,6 +186,21 @@ function sleepPowder(attacker,defender,battleState){
 	}
 }
 
+function smokescreen(attacker,defender,battleState){
+	addToLog(attacker.name + " used Smokescreen on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "normal";
+		if(defender.accMod > -6) {
+			defender.accMod = defender.accMod - 1;
+			addToLog(defender.name + "'s accuracy fell!");
+		} else {
+			addToLog(defender.name + "'s accuracy won't go any lower!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function tackle(attacker,defender,battleState){
 	addToLog(attacker.name + " used Tackle on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -176,6 +243,39 @@ function tailWhip(attacker,defender,battleState){
 	}
 }
 
+function takeDown(attacker,defender,battleState){
+	addToLog(attacker.name + " used Take Down on " + defender.name + ".");
+	if(attackHit(85,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.atk;
+		var def = defender.def;
+		var type = "normal";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 90;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.atkMod,false);
+			def = def * getStatMultiplier(defender.defMod,false);
+		} else {
+			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
+			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
+		addToLog(attacker.name + "'s Take Down hit " + defender.name + " for " + damage + " damage.");
+		var recoil = Math.max(Math.floor(damage/4),1);
+		if(damage > defender.hpCurrent){
+			recoil = Math.max(Math.floor(defender.hpCurrent/4),1);
+		}
+		addToLog(attacker.name + " took " + recoil + " damage from recoil.");
+		dealDamage(defender,damage);
+		dealDamage(attacker,recoil);
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function vineWhip(attacker,defender,battleState){
 	addToLog(attacker.name + " used Vine Whip on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -203,9 +303,50 @@ function vineWhip(attacker,defender,battleState){
 	}
 }
 
+function waterGun(attacker,defender,battleState){
+	addToLog(attacker.name + " used Water Gun on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.spcAtk;
+		var def = defender.spcDef;
+		var type = "water";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 40;
+		if(hasState(battleState,"rain")) {bp = bp * 1.5;}
+		if(hasState(battleState,"sun")) {bp = bp * 2/3;}
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
+			def = def * getStatMultiplier(defender.spcDefMod,false);
+		} else {
+			if(getStatMultiplier(attacker.spcAtkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.spcAtkMod,false);}
+			if(getStatMultiplier(defender.spcDefMod,false) < 1) {def = def * getStatMultiplier(defender.spcDefMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		addToLog(attacker.name + "'s Water Gun hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function withdraw(attacker,defender,battleState){
+	addToLog(attacker.name + " used Withdraw.");
+	var type = "water";
+	if(defender.defMod < 6) {
+		defender.defMod = defender.defMod + 1;
+		addToLog(defender.name + "'s defence rose!");
+	} else {
+		addToLog(defender.name + "'s defence won't go any higher!");
+	}
+}
+
 var allMoves = [];
+allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
 allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
 allMoves.push(new move(poisonPowder,"Poison Powder",[]));
-allMoves.push(new move(scratch,"Scratch",[]));
-allMoves.push(new move(sleepPowder,"Sleep Powder",[])); allMoves.push(new move(tackle,"Tackle",[]));
-allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
+allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
+allMoves.push(new move(smokescreen,"Smokescreen",[])); allMoves.push(new move(tackle,"Tackle",[]));
+allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(takeDown,"Take Down",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
+allMoves.push(new move(waterGun,"Water Gun",[])); allMoves.push(new move(withdraw,"Withdraw",[]));
