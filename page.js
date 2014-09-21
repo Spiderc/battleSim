@@ -103,8 +103,41 @@ jQuery(document).ready(function(){
 		jQuery("#hpCurrent2d").html(team2[3].hpCurrent); colorContainer("2d");
 		jQuery("#hpCurrent2e").html(team2[4].hpCurrent); colorContainer("2e");
 		jQuery("#hpCurrent2f").html(team2[5].hpCurrent); colorContainer("2f");
+		
+		jQuery("#hpBar1a").css("width", (team1[0].hpCurrent * 100 / team1[0].hpMax) + "%");
+		jQuery("#hpBar1a").css("background-color", getHpBarColor(team1[0].hpCurrent, team1[0].hpMax));
+		jQuery("#hpBar1b").css("width", (team1[1].hpCurrent * 100 / team1[1].hpMax) + "%");
+		jQuery("#hpBar1b").css("background-color", getHpBarColor(team1[1].hpCurrent, team1[1].hpMax));
+		jQuery("#hpBar1c").css("width", (team1[2].hpCurrent * 100 / team1[2].hpMax) + "%");
+		jQuery("#hpBar1c").css("background-color", getHpBarColor(team1[2].hpCurrent, team1[2].hpMax));
+		jQuery("#hpBar1d").css("width", (team1[3].hpCurrent * 100 / team1[3].hpMax) + "%");
+		jQuery("#hpBar1d").css("background-color", getHpBarColor(team1[3].hpCurrent, team1[3].hpMax));
+		jQuery("#hpBar1e").css("width", (team1[4].hpCurrent * 100 / team1[4].hpMax) + "%");
+		jQuery("#hpBar1e").css("background-color", getHpBarColor(team1[4].hpCurrent, team1[4].hpMax));
+		jQuery("#hpBar1f").css("width", (team1[5].hpCurrent * 100 / team1[5].hpMax) + "%");
+		jQuery("#hpBar1f").css("background-color", getHpBarColor(team1[5].hpCurrent, team1[5].hpMax));
+		
+		jQuery("#hpBar2a").css("width", (team2[0].hpCurrent * 100 / team2[0].hpMax) + "%");
+		jQuery("#hpBar2a").css("background-color", getHpBarColor(team2[0].hpCurrent, team2[0].hpMax));
+		jQuery("#hpBar2b").css("width", (team2[1].hpCurrent * 100 / team2[1].hpMax) + "%");
+		jQuery("#hpBar2b").css("background-color", getHpBarColor(team2[1].hpCurrent, team2[1].hpMax));
+		jQuery("#hpBar2c").css("width", (team2[2].hpCurrent * 100 / team2[2].hpMax) + "%");
+		jQuery("#hpBar2c").css("background-color", getHpBarColor(team2[2].hpCurrent, team2[2].hpMax));
+		jQuery("#hpBar2d").css("width", (team2[3].hpCurrent * 100 / team2[3].hpMax) + "%");
+		jQuery("#hpBar2d").css("background-color", getHpBarColor(team2[3].hpCurrent, team2[3].hpMax));
+		jQuery("#hpBar2e").css("width", (team2[4].hpCurrent * 100 / team2[4].hpMax) + "%");
+		jQuery("#hpBar2e").css("background-color", getHpBarColor(team2[4].hpCurrent, team2[4].hpMax));
+		jQuery("#hpBar2f").css("width", (team2[5].hpCurrent * 100 / team2[5].hpMax) + "%");
+		jQuery("#hpBar2f").css("background-color", getHpBarColor(team2[5].hpCurrent, team2[5].hpMax));
 	}
-
+	
+	function getHpBarColor(current, max){
+		var percent = current * 100 / max;
+		if(percent > 50){return "darkgreen";}
+		else if(percent > 25){return "gold";}
+		else{return "red";}
+	}
+	
 	function colorContainer(target){
 		if(target.charAt(0) == "1"){
 			if(team1[target.charCodeAt(1) - 97].status == "active") {jQuery("#container" + target).addClass("active");jQuery("#container" + target).removeClass("inactive");jQuery("#container" + target).removeClass("fainted");}

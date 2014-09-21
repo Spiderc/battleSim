@@ -22,3 +22,15 @@ div.battleLog{
 	overflow:scroll;
 	height:250px;
 }
+
+div.hpBar{
+	background-color: grey;
+	width: 200px;
+	height: 10px;
+}
+
+div.innerHpBar{
+	background-color: darkgreen;
+	width: 100%;
+	height:100%;
+}
