@@ -59,7 +59,7 @@ function dragonRage(attacker,defender,battleState){
 		if(defender.type1 == "fairy" || defender.type2 == "fairy") {
 			addToLog("But it had no effect.");
 		} else {
-			addToLog(attacker.name + "'s Tackle hit " + defender.name + " for " + damage + " damage.");
+			addToLog(attacker.name + "'s Dragon Rage hit " + defender.name + " for " + damage + " damage.");
 			dealDamage(defender,damage);
 		}
 	} else {
@@ -139,6 +139,33 @@ function poisonPowder(attacker,defender,battleState){
 			defender.affliction = new affliction("poison",-1);
 			addToLog(defender.name + " was poisoned!");
 		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function razorLeaf(attacker,defender,battleState){
+	addToLog(attacker.name + " used Razor Leaf on " + defender.name + ".");
+	if(attackHit(95,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.atk;
+		var def = defender.def;
+		var type = "grass";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 55;
+		var crit = critCalc(1);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.atkMod,false);
+			def = def * getStatMultiplier(defender.defMod,false);
+		} else {
+			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
+			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
+		addToLog(attacker.name + "'s Razor Leaf hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
 	} else {
 		addToLog("But it missed.");
 	}
@@ -345,7 +372,7 @@ function withdraw(attacker,defender,battleState){
 var allMoves = [];
 allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
 allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
-allMoves.push(new move(poisonPowder,"Poison Powder",[]));
+allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
 allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
 allMoves.push(new move(smokescreen,"Smokescreen",[])); allMoves.push(new move(tackle,"Tackle",[]));
 allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(takeDown,"Take Down",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
