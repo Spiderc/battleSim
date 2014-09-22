@@ -203,6 +203,10 @@ function canAttack(attacker,defender){
 			result = false;
 		}
 	}
+	if(result && hasCondition(attacker,"flinched")){
+		addToLog(attacker.name + " flinched.");
+		result = false;
+	}
 	return result;
 }
 
@@ -228,6 +232,9 @@ function addZeros(integer){
 
 function checkConditions(activeChecked,otherActive){
 	var damage;
+	if(hasCondition(activeChecked,"flinched")){
+		removeCondition(activeChecked,"flinched");
+	}
 	if(hasCondition(activeChecked,"seeded") && otherActive != null){
 		damage = Math.max(Math.floor(activeChecked.hpMax/8),1);
 		activeChecked.hpCurrent = activeChecked.hpCurrent - damage;
@@ -257,6 +264,13 @@ function hasCondition(pokemon,condition){
 		if(pokemon.conditions[i] == condition) {result = true;}
 	}
 	return result;
+}
+
+function removeCondition(pokemon,condition){
+	for(var i=0;i<pokemon.conditions.length;i++){
+		if(pokemon.conditions[i] == condition) {break;}
+	}
+	pokemon.conditions.splice(i,1);
 }
 
 function hasAffliction(pokemon,affliction){

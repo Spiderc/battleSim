@@ -15,6 +15,36 @@
 		these properties include: "priority"
 */
 
+function bite(attacker,defender,battleState){
+	addToLog(attacker.name + " used Bite on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.atk;
+		var def = defender.def;
+		var type = "dark";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 60;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.atkMod,false);
+			def = def * getStatMultiplier(defender.defMod,false);
+		} else {
+			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
+			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
+		addToLog(attacker.name + "'s Bite hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+		if(30 >= rng(1,100) && defender.status != "fainted"){
+			defender.conditions.push("flinched");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function bubble(attacker,defender,battleState){
 	addToLog(attacker.name + " used Bubble on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -370,7 +400,7 @@ function withdraw(attacker,defender,battleState){
 }
 
 var allMoves = [];
-allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
+allMoves.push(new move(bite,"Bite",[])); allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
 allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
 allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
 allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
