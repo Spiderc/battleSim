@@ -18,9 +18,9 @@ td.fainted{
 	background-color: red;
 }
 
-div.battleLog{
-	overflow:scroll;
-	height:250px;
+div.scrollable{
+	overflow: scroll;
+	height: 250px;
 }
 
 div.hpBar{

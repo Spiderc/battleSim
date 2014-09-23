@@ -288,14 +288,18 @@ function hasState(battleState,state){
 	return result;
 }
 
+function speciesHasType(species,type){
+	return species.type1 == type || species.type2 == type || type == "";
+}
+
 function hasType(pokemon,type){
-	return pokemon.type1 == type || pokemon.type2 == type;
+	return pokemon.type1 == type || pokemon.type2 == type || type == "";
 }
 
 function hasMove(pokemon,move){
 	var result = false;
 	for(var i=0;i<pokemon.species.learnset.length;i++){
-		if(pokemon.species.learnset[i].move == move) {result = true; break;}
+		if(pokemon.species.learnset[i].move == move || move == "") {result = true; break;}
 	}
 	return result;
 }

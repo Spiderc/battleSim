@@ -4,7 +4,7 @@ jQuery(document).ready(function(){
 	var battleState = [];
 	var turnCounter = 0;
 	for(var i=0;i<allPokemon.length;i++){
-		dropdownOptions = dropdownOptions + "<option>" + allPokemon[i].name + "</option>";
+		dropdownOptions = dropdownOptions + "<option value=" + allPokemon[i].name + ">" + allPokemon[i].name + "</option>";
 	}
 	jQuery("#pokemon1a").html(dropdownOptions);
 	jQuery("#pokemon1b").html(dropdownOptions);
@@ -60,6 +60,38 @@ jQuery(document).ready(function(){
 			}
 		}
 		reload();
+	});
+	
+	jQuery("#toggleSearch").click(function(){
+		if(jQuery("#searchResults").css("display") == "none"){
+			jQuery("#searchResults").show("slow");
+			jQuery("#searchArea").show("slow");
+			jQuery("#toggleSearch").html("Hide Search");
+		} else {
+			jQuery("#searchResults").hide("slow");
+			jQuery("#searchArea").hide("slow");
+			jQuery("#toggleSearch").html("Show Search");
+		}
+	});
+	
+	jQuery("#doSearch").click(function(){
+		var searchResults = [];
+		for(var i=0;i<allPokemon.length;i++){
+			if(speciesHasType(allPokemon[i],jQuery("#typeFilter1").val()) && speciesHasType(allPokemon[i],jQuery("#typeFilter2").val())){
+				searchResults.push(allPokemon[i]);
+			}
+		}
+		var resultString = "";
+		for(var i=0;i<searchResults.length;i++){
+			resultString = resultString + "<br/><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'> <button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button>";
+		}
+		jQuery("#searchResults").html(resultString);
+		
+		jQuery(".addToSlot").click(function(){
+			var pokemon = jQuery(this).attr('id').substring(6,jQuery(this).attr('id').length);
+			jQuery("#pokemon" + jQuery("#searchSlot").val() + " option[value=" + pokemon + "]").attr("selected","selected");
+			load(jQuery("#searchSlot").val());
+		});
 	});
 
 	function load(target){
@@ -314,6 +346,9 @@ jQuery(document).ready(function(){
 		jQuery("#pokemon2d").prop("disabled",true); jQuery("#level2d").prop("disabled",true);
 		jQuery("#pokemon2e").prop("disabled",true); jQuery("#level2e").prop("disabled",true);
 		jQuery("#pokemon2f").prop("disabled",true); jQuery("#level2f").prop("disabled",true);
+		jQuery("#searchResults").hide();
+		jQuery("#searchArea").hide();
+		jQuery("#toggleSearch").hide();
 	}
 
 	function beforeTurnEffects(){
