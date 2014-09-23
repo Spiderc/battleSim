@@ -86,7 +86,7 @@ function dragonRage(attacker,defender,battleState){
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var type = "dragon";
 		var damage = 40;
-		if(defender.type1 == "fairy" || defender.type2 == "fairy") {
+		if(hasType(defender,"fairy")) {
 			addToLog("But it had no effect.");
 		} else {
 			addToLog(attacker.name + "'s Dragon Rage hit " + defender.name + " for " + damage + " damage.");
@@ -120,7 +120,7 @@ function ember(attacker,defender,battleState){
 		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
 		addToLog(attacker.name + "'s Ember hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
-		if(10 >= rng(1,100) && defender.status != "fainted" && defender.type1 != "fire" && defender.type2 != "fire" && defender.affliction == null){
+		if(10 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"fire") && defender.affliction == null){
 			defender.affliction = new affliction("burn",-1);
 			addToLog(defender.name + " was burned by the attack.");
 		}
@@ -133,7 +133,7 @@ function leechSeed(attacker,defender,battleState){
 	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
 	if(attackHit(90,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var type = "grass";
-		if(defender.type1 == "grass" || defender.type2 == "grass" || hasCondition(defender,"seeded")) {
+		if(hasType(defender,"grass") || hasCondition(defender,"seeded")) {
 			addToLog("But it had no effect.");
 		} else {
 			defender.conditions.push("seeded");
@@ -163,7 +163,7 @@ function poisonPowder(attacker,defender,battleState){
 	addToLog(attacker.name + " used Poison Powder on " + defender.name + ".");
 	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var type = "poison";
-		if(defender.type1 == "grass" || defender.type2 == "grass" || defender.type1 == "poison" || defender.type2 == "poison" || defender.type1 == "steel" || defender.type2 == "steel" || defender.affliction != null) {
+		if(hasType(defender,"grass") || hasType(defender,"poison") || hasType(defender,"steel") || defender.affliction != null) {
 			addToLog("But it had no effect.");
 		} else {
 			defender.affliction = new affliction("poison",-1);
@@ -232,7 +232,7 @@ function sleepPowder(attacker,defender,battleState){
 	addToLog(attacker.name + " used Sleep Powder on " + defender.name + ".");
 	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
 		var type = "grass";
-		if(defender.type1 == "grass" || defender.type2 == "grass" || defender.affliction != null) {
+		if(hasType(defender,"grass") || defender.affliction != null) {
 			addToLog("But it had no effect.");
 		} else {
 			defender.affliction = new affliction("sleep",rng(1,3));

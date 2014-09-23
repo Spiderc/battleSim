@@ -18,6 +18,7 @@ function pokemonSpecies(dex,name,type1,type2,hp,atk,def,spcAtk,spcDef,spd,learns
 
 function pokemon(level,species){
 	this.level = level;
+	this.species = species;
 	this.name = species.name;
 	this.type1 = species.type1;
 	this.type2 = species.type2;
@@ -283,6 +284,18 @@ function hasState(battleState,state){
 	var result = false;
 	for(var i=0;i<battleState.length;i++){
 		if(battleState[i].indexOf(state) > 0) {result = true;}
+	}
+	return result;
+}
+
+function hasType(pokemon,type){
+	return pokemon.type1 == type || pokemon.type2 == type;
+}
+
+function hasMove(pokemon,move){
+	var result = false;
+	for(var i=0;i<pokemon.species.learnset.length;i++){
+		if(pokemon.species.learnset[i].move == move) {result = true; break;}
 	}
 	return result;
 }
