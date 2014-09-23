@@ -1,10 +1,14 @@
 jQuery(document).ready(function(){
 	var dropdownOptions = "";
+	var dropdownMoves = "<option value=''></option>";
 	var teamsLocked = false;
 	var battleState = [];
 	var turnCounter = 0;
 	for(var i=0;i<allPokemon.length;i++){
 		dropdownOptions = dropdownOptions + "<option value=" + allPokemon[i].name + ">" + allPokemon[i].name + "</option>";
+	}
+	for(var i=0;i<allMoves.length;i++){
+		dropdownMoves = dropdownMoves + "<option value='" + allMoves[i].name + "'>" + allMoves[i].name + "</option>";
 	}
 	jQuery("#pokemon1a").html(dropdownOptions);
 	jQuery("#pokemon1b").html(dropdownOptions);
@@ -18,6 +22,10 @@ jQuery(document).ready(function(){
 	jQuery("#pokemon2d").html(dropdownOptions);
 	jQuery("#pokemon2e").html(dropdownOptions);
 	jQuery("#pokemon2f").html(dropdownOptions);
+	jQuery("#moveFilter1").html(dropdownMoves);
+	jQuery("#moveFilter2").html(dropdownMoves);
+	jQuery("#moveFilter3").html(dropdownMoves);
+	jQuery("#moveFilter4").html(dropdownMoves);
 	var team1 = [];
 	var team2 = [];
 	var readyMove1 = null;
@@ -77,7 +85,7 @@ jQuery(document).ready(function(){
 	jQuery("#doSearch").click(function(){
 		var searchResults = [];
 		for(var i=0;i<allPokemon.length;i++){
-			if(speciesHasType(allPokemon[i],jQuery("#typeFilter1").val()) && speciesHasType(allPokemon[i],jQuery("#typeFilter2").val())){
+			if(speciesHasType(allPokemon[i],jQuery("#typeFilter1").val()) && speciesHasType(allPokemon[i],jQuery("#typeFilter2").val()) && speciesHasMove(allPokemon[i],jQuery("#moveFilter1").val()) && speciesHasMove(allPokemon[i],jQuery("#moveFilter2").val()) && speciesHasMove(allPokemon[i],jQuery("#moveFilter3").val()) && speciesHasMove(allPokemon[i],jQuery("#moveFilter4").val())){
 				searchResults.push(allPokemon[i]);
 			}
 		}

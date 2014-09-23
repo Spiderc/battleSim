@@ -296,6 +296,14 @@ function hasType(pokemon,type){
 	return pokemon.type1 == type || pokemon.type2 == type || type == "";
 }
 
+function speciesHasMove(species,move){
+	var result = false;
+	for(var i=0;i<species.learnset.length;i++){
+		if(species.learnset[i].move == move || move == "") {result = true; break;}
+	}
+	return result;
+}
+
 function hasMove(pokemon,move){
 	var result = false;
 	for(var i=0;i<pokemon.species.learnset.length;i++){
