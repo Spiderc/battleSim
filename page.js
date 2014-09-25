@@ -1,6 +1,6 @@
 jQuery(document).ready(function(){
 	var dropdownOptions = "";
-	var dropdownMoves = "<option value=''></option>";
+	var dropdownMoves = "<option value=''>Move Filter</option>";
 	var teamsLocked = false;
 	var battleState = [];
 	var turnCounter = 0;
