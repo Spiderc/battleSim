@@ -159,6 +159,17 @@ function growl(attacker,defender,battleState){
 	}
 }
 
+function harden(attacker,defender,battleState){
+	addToLog(attacker.name + " used Harden.");
+	var type = "normal";
+	if(defender.defMod < 6) {
+		defender.defMod = defender.defMod + 1;
+		addToLog(defender.name + "'s defence rose!");
+	} else {
+		addToLog(defender.name + "'s defence won't go any higher!");
+	}
+}
+
 function poisonPowder(attacker,defender,battleState){
 	addToLog(attacker.name + " used Poison Powder on " + defender.name + ".");
 	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -196,6 +207,24 @@ function razorLeaf(attacker,defender,battleState){
 		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
 		addToLog(attacker.name + "'s Razor Leaf hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function scaryFace(attacker,defender,battleState){
+	addToLog(attacker.name + " used Scary Face on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "normal";
+		if(defender.spdMod > -5) {
+			defender.spdMod = defender.spdMod - 2;
+			addToLog(defender.name + "'s speed sharply fell!");
+		} else if(defender.spdMod > -6){
+			defender.spdMod = defender.spdMod - 1;
+			addToLog(defender.name + "'s speed fell!");
+		} else {
+			addToLog(defender.name + "'s speed won't go any lower!");
+		}
 	} else {
 		addToLog("But it missed.");
 	}
@@ -252,6 +281,24 @@ function smokescreen(attacker,defender,battleState){
 			addToLog(defender.name + "'s accuracy fell!");
 		} else {
 			addToLog(defender.name + "'s accuracy won't go any lower!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function stringShot(attacker,defender,battleState){
+	addToLog(attacker.name + " used String Shot on " + defender.name + ".");
+	if(attackHit(95,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "bug";
+		if(defender.spdMod > -5) {
+			defender.spdMod = defender.spdMod - 2;
+			addToLog(defender.name + "'s speed sharply fell!");
+		} else if(defender.spdMod > -6){
+			defender.spdMod = defender.spdMod - 1;
+			addToLog(defender.name + "'s speed fell!");
+		} else {
+			addToLog(defender.name + "'s speed won't go any lower!");
 		}
 	} else {
 		addToLog("But it missed.");
@@ -402,8 +449,9 @@ function withdraw(attacker,defender,battleState){
 var allMoves = [];
 allMoves.push(new move(bite,"Bite",[])); allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
 allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
+allMoves.push(new move(harden,"Harden",[]));
 allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
-allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
-allMoves.push(new move(smokescreen,"Smokescreen",[])); allMoves.push(new move(tackle,"Tackle",[]));
+allMoves.push(new move(scaryFace,"Scary Face",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
+allMoves.push(new move(smokescreen,"Smokescreen",[])); allMoves.push(new move(stringShot,"String Shot",[])); allMoves.push(new move(tackle,"Tackle",[]));
 allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(takeDown,"Take Down",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
 allMoves.push(new move(waterGun,"Water Gun",[])); allMoves.push(new move(withdraw,"Withdraw",[]));
