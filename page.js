@@ -89,11 +89,18 @@ jQuery(document).ready(function(){
 				searchResults.push(allPokemon[i]);
 			}
 		}
-		var resultString = "";
+		var searchTable = "<table><tr><td>";
 		for(var i=0;i<searchResults.length;i++){
-			resultString = resultString + "<br/><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'> <button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button>";
+			if(i % 7 == 0){
+				searchTable = searchTable + "<tr><td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button><center></td>";
+			} else if(i % 7 == 6){
+				searchTable = searchTable + "<td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button></center></td></tr>";
+			} else {
+				searchTable = searchTable + "<td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button></center></td>";
+			}
 		}
-		jQuery("#searchResults").html(resultString);
+		searchTable = searchTable + "</td></tr></table>";
+		jQuery("#searchResults").html(searchTable);
 		
 		jQuery(".addToSlot").click(function(){
 			var pokemon = jQuery(this).attr('id').substring(6,jQuery(this).attr('id').length);
