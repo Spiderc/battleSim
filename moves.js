@@ -129,6 +129,40 @@ function ember(attacker,defender,battleState){
 	}
 }
 
+function fireFang(attacker,defender,battleState){
+	addToLog(attacker.name + " used Fire Fang on " + defender.name + ".");
+	if(attackHit(95,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.atk;
+		var def = defender.def;
+		var type = "fire";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 65;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.atkMod,false);
+			def = def * getStatMultiplier(defender.defMod,false);
+		} else {
+			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
+			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
+		addToLog(attacker.name + "'s Fire Fang hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+		if(10 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"fire") && defender.affliction == null){
+			defender.affliction = new affliction("burn",-1);
+			addToLog(defender.name + " was burned by the attack.");
+		}
+		if(10 >= rng(1,100) && defender.status != "fainted"){
+			defender.conditions.push("flinched");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function leechSeed(attacker,defender,battleState){
 	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
 	if(attackHit(90,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -448,7 +482,7 @@ function withdraw(attacker,defender,battleState){
 
 var allMoves = [];
 allMoves.push(new move(bite,"Bite",[])); allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
-allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
+allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(fireFang,"Fire Fang",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
 allMoves.push(new move(harden,"Harden",[]));
 allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
 allMoves.push(new move(scaryFace,"Scary Face",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
