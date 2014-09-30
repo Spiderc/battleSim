@@ -96,7 +96,7 @@ function typeCalc(attack,defender){
 	if(type > 1) {addToLog("It's super effective!");}
 	if(type < 1 && type > 0) {addToLog("It's not very effective.");}
 	if(type == 0) {addToLog("It doesn't effect " + defender.name);}
-	return 1;
+	return type;
 }
 
 function typeNo(type){
@@ -206,6 +206,10 @@ function canAttack(attacker,defender){
 	}
 	if(result && hasCondition(attacker,"flinched")){
 		addToLog(attacker.name + " flinched.");
+		result = false;
+	}
+	if(hasAffliction(attacker,"paralyzed") && 25 >= rng(1,100)){
+		addToLog(attacker.name + " is paralyzed! It can't move!");
 		result = false;
 	}
 	return result;
@@ -332,6 +336,12 @@ function attackOrder(pokemon1,pokemon2,move1,move2){
 	var pokemon2Spd = pokemon2.spd * getStatMultiplier(pokemon2.spdMod,false);
 	var priority1 = hasProperty(move1,"priority");
 	var priority2 = hasProperty(move2,"priority");
+	if(hasAffliction(pokemon1,"paralyzed")){
+		pokemon1Spd = pokemon1Spd * .25;
+	}
+	if(hasAffliction(pokemon2,"paralyzed")){
+		pokemon2Spd = pokemon2Spd * .25;
+	}
 	if(priority1 > priority2) {
 		result = 1;
 	} else if(priority2 > priority1) {

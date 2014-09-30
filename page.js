@@ -278,12 +278,13 @@ jQuery(document).ready(function(){
 
 	function doBattle(){
 		beforeTurnEffects();
-		if(attackOrder(team1[getActive(1)],team2[getActive(2)],readyMove1,readyMove2) == 1){
+		var attackFirst = attackOrder(team1[getActive(1)],team2[getActive(2)],readyMove1,readyMove2);
+		if(attackFirst == 1){
 			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
 			if(team2[getActive(2)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
-		} else if(attackOrder(team1[getActive(1)],team2[getActive(2)],readyMove1,readyMove2) == 2){
+		} else if(attackFirst == 2){
 			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
-			if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
+			if(team1[getActive(1)] != null && canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
 		} else {
 			if(rng(0,1) == 0) {
 				if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}

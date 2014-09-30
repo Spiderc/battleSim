@@ -163,21 +163,6 @@ function fireFang(attacker,defender,battleState){
 	}
 }
 
-function leechSeed(attacker,defender,battleState){
-	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
-	if(attackHit(90,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
-		var type = "grass";
-		if(hasType(defender,"grass") || hasCondition(defender,"seeded")) {
-			addToLog("But it had no effect.");
-		} else {
-			defender.conditions.push("seeded");
-			addToLog(defender.name + " was seeded!");
-		}
-	} else {
-		addToLog("But it missed.");
-	}
-}
-
 function growl(attacker,defender,battleState){
 	addToLog(attacker.name + " used Growl on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -188,6 +173,35 @@ function growl(attacker,defender,battleState){
 		} else {
 			addToLog(defender.name + "'s attack won't go any lower!");
 		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function gust(attacker,defender,battleState){
+	addToLog(attacker.name + " used Gust on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.spcAtk;
+		var def = defender.spcDef;
+		var type = "flying";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 40;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
+			def = def * getStatMultiplier(defender.spcDefMod,false);
+		} else {
+			if(getStatMultiplier(attacker.spcAtkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.spcAtkMod,false);}
+			if(getStatMultiplier(defender.spcDefMod,false) < 1) {def = def * getStatMultiplier(defender.spcDefMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasCondition(defender,"upHigh")){
+			damage = damage * 2;
+		}
+		addToLog(attacker.name + "'s Gust hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
 	} else {
 		addToLog("But it missed.");
 	}
@@ -204,6 +218,36 @@ function harden(attacker,defender,battleState){
 	}
 }
 
+function leechSeed(attacker,defender,battleState){
+	addToLog(attacker.name + " used Leech Seed on " + defender.name + ".");
+	if(attackHit(90,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "grass";
+		if(hasType(defender,"grass") || hasCondition(defender,"seeded")) {
+			addToLog("But it had no effect.");
+		} else {
+			defender.conditions.push("seeded");
+			addToLog(defender.name + " was seeded!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function leer(attacker,defender,battleState){
+	addToLog(attacker.name + " used Leer on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "normal";
+		if(defender.defMod > -6) {
+			defender.defMod = defender.defMod - 1;
+			addToLog(defender.name + "'s defence fell!");
+		} else {
+			addToLog(defender.name + "'s defence won't go any lower!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function poisonPowder(attacker,defender,battleState){
 	addToLog(attacker.name + " used Poison Powder on " + defender.name + ".");
 	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -213,6 +257,37 @@ function poisonPowder(attacker,defender,battleState){
 		} else {
 			defender.affliction = new affliction("poison",-1);
 			addToLog(defender.name + " was poisoned!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
+function poisonSting(attacker,defender,battleState){
+	addToLog(attacker.name + " used Poison Sting on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.atk;
+		var def = defender.def;
+		var type = "poison";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 15;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.atkMod,false);
+			def = def * getStatMultiplier(defender.defMod,false);
+		} else {
+			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
+			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
+		addToLog(attacker.name + "'s Poison Sting hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+		if(30 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"steel") && !hasType(defender,"poison") && defender.affliction == null){
+			defender.affliction = new affliction("poison",-1);
+			addToLog(defender.name + " was poisoned by the attack.");
 		}
 	} else {
 		addToLog("But it missed.");
@@ -441,6 +516,37 @@ function takeDown(attacker,defender,battleState){
 	}
 }
 
+function thundershock(attacker,defender,battleState){
+	addToLog(attacker.name + " used Thunder Shock on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.spcAtk;
+		var def = defender.spcDef;
+		var type = "electric";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		console.log(typeDamage);
+		var bp = 40;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
+			def = def * getStatMultiplier(defender.spcDefMod,false);
+		} else {
+			if(getStatMultiplier(attacker.spcAtkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.spcAtkMod,false);}
+			if(getStatMultiplier(defender.spcDefMod,false) < 1) {def = def * getStatMultiplier(defender.spcDefMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		addToLog(attacker.name + "'s Thunder Shock hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+		if(10 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"ground") && !hasType(defender,"electric") && defender.affliction == null){
+			defender.affliction = new affliction("paralyzed",-1);
+			addToLog(defender.name + " was paralyzed by the attack.");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function vineWhip(attacker,defender,battleState){
 	addToLog(attacker.name + " used Vine Whip on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -509,10 +615,12 @@ function withdraw(attacker,defender,battleState){
 
 var allMoves = [];
 allMoves.push(new move(bite,"Bite",[])); allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
-allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(fireFang,"Fire Fang",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(growl,"Growl",[]));
-allMoves.push(new move(harden,"Harden",[]));
-allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(quickAttack,"Quick Attack",["priority1"])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
+allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(fireFang,"Fire Fang",[])); allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(gust,"Gust",[]));
+allMoves.push(new move(harden,"Harden",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(leer,"Leer",[]));
+allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(poisonSting,"Poison Sting",[]));
+allMoves.push(new move(quickAttack,"Quick Attack",["priority1"])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
 allMoves.push(new move(scaryFace,"Scary Face",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
 allMoves.push(new move(smokescreen,"Smokescreen",[])); allMoves.push(new move(stringShot,"String Shot",[])); allMoves.push(new move(tackle,"Tackle",[]));
-allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(takeDown,"Take Down",[])); allMoves.push(new move(vineWhip,"Vine Whip",[]));
+allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(takeDown,"Take Down",[])); allMoves.push(new move(thundershock,"Thunder Shock",[]));
+allMoves.push(new move(vineWhip,"Vine Whip",[]));
 allMoves.push(new move(waterGun,"Water Gun",[])); allMoves.push(new move(withdraw,"Withdraw",[]));
