@@ -283,7 +283,7 @@ function hasAffliction(pokemon,affliction){
 function hasState(battleState,state){
 	var result = false;
 	for(var i=0;i<battleState.length;i++){
-		if(battleState[i].indexOf(state) > 0) {result = true;}
+		if(battleState[i].indexOf(state) > -1) {result = true;}
 	}
 	return result;
 }
@@ -312,14 +312,36 @@ function hasMove(pokemon,move){
 	return result;
 }
 
+function hasProperty(move,property){
+	var result = 0;
+	for(var i=0;i<move.properties.length;i++){
+		if(move.properties[i].indexOf(property) > -1) {
+			if(move.properties[i] == property){
+				result = 1;
+			} else {
+				result = Number(move.properties[i].substring(property.length,move.properties[i].length));
+			}
+		}
+	}
+	return result;
+}
+
 function attackOrder(pokemon1,pokemon2,move1,move2){
 	var result = 0;
 	var pokemon1Spd = pokemon1.spd * getStatMultiplier(pokemon1.spdMod,false);
 	var pokemon2Spd = pokemon2.spd * getStatMultiplier(pokemon2.spdMod,false);
-	if(pokemon1Spd > pokemon2Spd) {
+	var priority1 = hasProperty(move1,"priority");
+	var priority2 = hasProperty(move2,"priority");
+	if(priority1 > priority2) {
 		result = 1;
-	} else if(pokemon2Spd > pokemon1Spd){
+	} else if(priority2 > priority1) {
 		result = 2;
+	} else {
+		if(pokemon1Spd > pokemon2Spd) {
+			result = 1;
+		} else if(pokemon2Spd > pokemon1Spd){
+			result = 2;
+		}
 	}
 	return result;
 }
