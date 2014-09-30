@@ -278,10 +278,10 @@ jQuery(document).ready(function(){
 
 	function doBattle(){
 		beforeTurnEffects();
-		if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) > (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
+		if(attackOrder(team1[getActive(1)],team2[getActive(2)],readyMove1,readyMove2) == 1){
 			if(canAttack(team1[getActive(1)],team2[getActive(2)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
 			if(team2[getActive(2)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
-		} else if((team1[getActive(1)].spd * getStatMultiplier(team1[getActive(1)].spdMod,false)) < (team2[getActive(2)].spd * getStatMultiplier(team2[getActive(2)].spdMod,false))){
+		} else if(attackOrder(team1[getActive(1)],team2[getActive(2)],readyMove1,readyMove2) == 2){
 			if(canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove2.call(team2[getActive(2)],team1[getActive(1)],battleState);}
 			if(team1[getActive(1)] != null && canAttack(team2[getActive(2)],team1[getActive(1)])) {readyMove1.call(team1[getActive(1)],team2[getActive(2)],battleState);}
 		} else {

@@ -311,3 +311,15 @@ function hasMove(pokemon,move){
 	}
 	return result;
 }
+
+function attackOrder(pokemon1,pokemon2,move1,move2){
+	var result = 0;
+	var pokemon1Spd = pokemon1.spd * getStatMultiplier(pokemon1.spdMod,false);
+	var pokemon2Spd = pokemon2.spd * getStatMultiplier(pokemon2.spdMod,false);
+	if(pokemon1Spd > pokemon2Spd) {
+		result = 1;
+	} else if(pokemon2Spd > pokemon1Spd){
+		result = 2;
+	}
+	return result;
+}
