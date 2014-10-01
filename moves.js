@@ -248,6 +248,33 @@ function leer(attacker,defender,battleState){
 	}
 }
 
+function peck(attacker,defender,battleState){
+	addToLog(attacker.name + " used Peck on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.atk;
+		var def = defender.def;
+		var type = "flying";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 35;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.atkMod,false);
+			def = def * getStatMultiplier(defender.defMod,false);
+		} else {
+			if(getStatMultiplier(attacker.atkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.atkMod,false);}
+			if(getStatMultiplier(defender.defMod,false) < 1) {def = def * getStatMultiplier(defender.defMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		if(hasAffliction(attacker,"burn")) {damage = Math.ceil(damage/2);}
+		addToLog(attacker.name + "'s Peck hit " + defender.name + " for " + damage + " damage.");
+		dealDamage(defender,damage);
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function poisonPowder(attacker,defender,battleState){
 	addToLog(attacker.name + " used Poison Powder on " + defender.name + ".");
 	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -616,6 +643,7 @@ function withdraw(attacker,defender,battleState){
 var allMoves = [];
 allMoves.push(new move(bite,"Bite",[])); allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
 allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(fireFang,"Fire Fang",[])); allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(gust,"Gust",[]));
+allMoves.push(new move(peck,"Peck",[]));
 allMoves.push(new move(harden,"Harden",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(leer,"Leer",[]));
 allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(poisonSting,"Poison Sting",[]));
 allMoves.push(new move(quickAttack,"Quick Attack",["priority1"])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
