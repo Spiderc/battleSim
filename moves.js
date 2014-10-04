@@ -15,6 +15,41 @@
 		these properties include: "priority"
 */
 
+function absorb(attacker,defender,battleState){
+	addToLog(attacker.name + " used Absorb on " + defender.name + ".");
+	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var atk = attacker.spcAtk;
+		var def = defender.spcDef;
+		var type = "grass";
+		var stab = stabCalc(type,attacker);
+		var typeDamage = typeCalc(type,defender);
+		var bp = 20;
+		var crit = critCalc(0);
+		var other = 1;
+		if(crit == 1){
+			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
+			def = def * getStatMultiplier(defender.spcDefMod,false);
+		} else {
+			if(getStatMultiplier(attacker.spcAtkMod,false) > 1) {atk = atk * getStatMultiplier(attacker.spcAtkMod,false);}
+			if(getStatMultiplier(defender.spcDefMod,false) < 1) {def = def * getStatMultiplier(defender.spcDefMod,false);}
+		}
+		var damage = calcDamage(attacker.level,atk,def,bp,stab,typeDamage,crit,other);
+		addToLog(attacker.name + "'s Absorb hit " + defender.name + " for " + damage + " damage.");
+		var healing = Math.ceil(damage/2);
+		if(healing > defender.hpCurrent){
+			healing = Math.ceil(defender.hpCurrent/2);
+		}
+		if(healing + attacker.hpCurrent > attacker.hpMax){
+			healing = attacker.hpMax - attacker.hpCurrent;
+		}
+		addToLog(attacker.name + " healed " + healing + " damage.");
+		dealDamage(defender,damage);
+		dealDamage(attacker,-healing);
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function bite(attacker,defender,battleState){
 	addToLog(attacker.name + " used Bite on " + defender.name + ".");
 	if(attackHit(100,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -462,6 +497,24 @@ function scratch(attacker,defender,battleState){
 	}
 }
 
+function screech(attacker,defender,battleState){
+	addToLog(attacker.name + " used Screech on " + defender.name + ".");
+	if(attackHit(85,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
+		var type = "normal";
+		if(defender.defMod > -5) {
+			defender.defMod = defender.defMod - 2;
+			addToLog(defender.name + "'s defence sharply fell!");
+		} else if(defender.defMod > -6){
+			defender.defMod = defender.defMod - 1;
+			addToLog(defender.name + "'s defence fell!");
+		} else {
+			addToLog(defender.name + "'s defence won't go any lower!");
+		}
+	} else {
+		addToLog("But it missed.");
+	}
+}
+
 function sleepPowder(attacker,defender,battleState){
 	addToLog(attacker.name + " used Sleep Powder on " + defender.name + ".");
 	if(attackHit(75,getStatMultiplier(attacker.accMod,true),getStatMultiplier(defender.evaMod,true))){
@@ -683,6 +736,7 @@ function withdraw(attacker,defender,battleState){
 }
 
 var allMoves = [];
+allMoves.push(new move(absorb,"Absorb",[]));
 allMoves.push(new move(bite,"Bite",[])); allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
 allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(fireFang,"Fire Fang",[])); allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(gust,"Gust",[]));
 allMoves.push(new move(peck,"Peck",[]));
@@ -690,7 +744,8 @@ allMoves.push(new move(harden,"Harden",[])); allMoves.push(new move(leechSeed,"L
 allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(poisonSting,"Poison Sting",[])); allMoves.push(new move(pound,"Pound",[]));
 allMoves.push(new move(quickAttack,"Quick Attack",["priority1"])); allMoves.push(new move(razorLeaf,"Razor Leaf",[]));
 allMoves.push(new move(sandAttack,"Sand Attack",[]));
-allMoves.push(new move(scaryFace,"Scary Face",[])); allMoves.push(new move(scratch,"Scratch",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
+allMoves.push(new move(scaryFace,"Scary Face",[])); allMoves.push(new move(scratch,"Scratch",[]));
+allMoves.push(new move(screech,"Screech",[])); allMoves.push(new move(sleepPowder,"Sleep Powder",[]));
 allMoves.push(new move(smokescreen,"Smokescreen",[])); allMoves.push(new move(stringShot,"String Shot",[])); allMoves.push(new move(tackle,"Tackle",[]));
 allMoves.push(new move(tailWhip,"Tail Whip",[])); allMoves.push(new move(takeDown,"Take Down",[])); allMoves.push(new move(thundershock,"Thunder Shock",[]));
 allMoves.push(new move(vineWhip,"Vine Whip",[]));
