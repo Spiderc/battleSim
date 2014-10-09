@@ -24,7 +24,7 @@ function absorb(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 20;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
@@ -59,7 +59,7 @@ function bite(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 60;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -91,7 +91,7 @@ function bubble(attacker,defender,battleState){
 		var bp = 40;
 		if(hasState(battleState,"rain")) {bp = bp * 1.5;}
 		if(hasState(battleState,"sun")) {bp = bp * 2/3;}
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
@@ -143,7 +143,7 @@ function ember(attacker,defender,battleState){
 		var bp = 40;
 		if(hasState(battleState,"sun")) {bp = bp * 1.5;}
 		if(hasState(battleState,"rain")) {bp = bp * 2/3;}
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
@@ -173,7 +173,7 @@ function fireFang(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 65;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -195,6 +195,17 @@ function fireFang(attacker,defender,battleState){
 		}
 	} else {
 		addToLog("But it missed.");
+	}
+}
+
+function focusEnergy(attacker,defender,battleState){
+	addToLog(attacker.name + " used Focus Energy.");
+	var type = "normal";
+	if(!hasCondition(attacker,"focused")) {
+		attacker.conditions.push("focused");
+		addToLog(attacker.name + " is getting pumped!");
+	} else {
+		addToLog("But it failed.");
 	}
 }
 
@@ -222,7 +233,7 @@ function gust(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 40;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
@@ -292,7 +303,7 @@ function peck(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 35;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -334,7 +345,7 @@ function poisonSting(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 15;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -365,7 +376,7 @@ function pound(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 40;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -392,7 +403,7 @@ function quickAttack(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 40;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -419,7 +430,7 @@ function razorLeaf(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 55;
-		var crit = critCalc(1);
+		var crit = critCalc(1,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -479,7 +490,7 @@ function scratch(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 40;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -572,7 +583,7 @@ function tackle(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 50;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -614,7 +625,7 @@ function takeDown(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 90;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -648,7 +659,7 @@ function thundershock(attacker,defender,battleState){
 		var typeDamage = typeCalc(type,defender);
 		console.log(typeDamage);
 		var bp = 40;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
@@ -678,7 +689,7 @@ function vineWhip(attacker,defender,battleState){
 		var stab = stabCalc(type,attacker);
 		var typeDamage = typeCalc(type,defender);
 		var bp = 45;
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.atkMod,false);
@@ -707,7 +718,7 @@ function waterGun(attacker,defender,battleState){
 		var bp = 40;
 		if(hasState(battleState,"rain")) {bp = bp * 1.5;}
 		if(hasState(battleState,"sun")) {bp = bp * 2/3;}
-		var crit = critCalc(0);
+		var crit = critCalc(0,attacker,defender);
 		var other = 1;
 		if(crit == 1){
 			atk = atk * getStatMultiplier(attacker.spcAtkMod,false);
@@ -738,7 +749,9 @@ function withdraw(attacker,defender,battleState){
 var allMoves = [];
 allMoves.push(new move(absorb,"Absorb",[]));
 allMoves.push(new move(bite,"Bite",[])); allMoves.push(new move(bubble,"Bubble",[])); allMoves.push(new move(dragonRage,"Dragon Rage",[]));
-allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(fireFang,"Fire Fang",[])); allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(gust,"Gust",[]));
+allMoves.push(new move(ember,"Ember",[])); allMoves.push(new move(fireFang,"Fire Fang",[]));
+allMoves.push(new move(focusEnergy,"Focus Energy",[]));
+allMoves.push(new move(growl,"Growl",[])); allMoves.push(new move(gust,"Gust",[]));
 allMoves.push(new move(peck,"Peck",[]));
 allMoves.push(new move(harden,"Harden",[])); allMoves.push(new move(leechSeed,"Leech Seed",[])); allMoves.push(new move(leer,"Leer",[]));
 allMoves.push(new move(poisonPowder,"Poison Powder",[])); allMoves.push(new move(poisonSting,"Poison Sting",[])); allMoves.push(new move(pound,"Pound",[]));

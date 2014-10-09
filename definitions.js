@@ -121,13 +121,17 @@ function typeNo(type){
 	return number;
 }
 
-function critCalc(chance){
+function critCalc(chance,attacker,defender){
 	var crit = 1;
-	if(chance = 0){
+	console.log(hasCondition(attacker,"focused"));
+	if(hasCondition(attacker,"focused")){
+		chance = chance + 2;
+	}
+	if(chance == 0){
 		if(rng(0,15) == 0) {crit = 1.5;}
-	} else if(chance = 1){
+	} else if(chance == 1){
 		if(rng(0,7) == 0) {crit = 1.5;}
-	} else if(chance = 2){
+	} else if(chance == 2){
 		if(rng(0,2) == 0) {crit = 1.5;}
 	} else {crit = 1.5;}
 	if(crit != 1) {addToLog("Critical hit!");}
