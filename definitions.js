@@ -53,9 +53,10 @@ function levelMove(move,level){
 	this.level = level;
 }
 
-function affliction(name,duration){
+function affliction(name,duration,display){
 	this.name = name;
 	this.duration = duration;
+	this.display = display;
 }
 
 function addToLog(message){
@@ -149,6 +150,7 @@ function dealDamage(defender,damage){
 	if(defender.hpCurrent < 1) {
 		defender.hpCurrent = 0;
 		defender.status = "fainted";
+		defender.affliction = null;
 		addToLog(defender.name + " fainted.");
 	}
 }

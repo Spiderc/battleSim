@@ -131,25 +131,25 @@ jQuery(document).ready(function(){
 			jQuery("#hpMax" + target).html(team2[target.charCodeAt(1) - 97].hpMax);
 		}
 		jQuery("#sprite" + target).attr("src","http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(jQuery("#pokemon" + target).val()).dex) + ".png");
-		colorContainer(target);
+		updateContainer(target);
 		if(jQuery("#move" + target + "2").html() == "") {jQuery("#move" + target + "2").hide();} else {jQuery("#move" + target + "2").show();}
 		if(jQuery("#move" + target + "3").html() == "") {jQuery("#move" + target + "3").hide();} else {jQuery("#move" + target + "3").show();}
 		if(jQuery("#move" + target + "4").html() == "") {jQuery("#move" + target + "4").hide();} else {jQuery("#move" + target + "4").show();}
 	}
 
 	function reload(){
-		jQuery("#hpCurrent1a").html(team1[0].hpCurrent); colorContainer("1a");
-		jQuery("#hpCurrent1b").html(team1[1].hpCurrent); colorContainer("1b");
-		jQuery("#hpCurrent1c").html(team1[2].hpCurrent); colorContainer("1c");
-		jQuery("#hpCurrent1d").html(team1[3].hpCurrent); colorContainer("1d");
-		jQuery("#hpCurrent1e").html(team1[4].hpCurrent); colorContainer("1e");
-		jQuery("#hpCurrent1f").html(team1[5].hpCurrent); colorContainer("1f");
-		jQuery("#hpCurrent2a").html(team2[0].hpCurrent); colorContainer("2a");
-		jQuery("#hpCurrent2b").html(team2[1].hpCurrent); colorContainer("2b");
-		jQuery("#hpCurrent2c").html(team2[2].hpCurrent); colorContainer("2c");
-		jQuery("#hpCurrent2d").html(team2[3].hpCurrent); colorContainer("2d");
-		jQuery("#hpCurrent2e").html(team2[4].hpCurrent); colorContainer("2e");
-		jQuery("#hpCurrent2f").html(team2[5].hpCurrent); colorContainer("2f");
+		jQuery("#hpCurrent1a").html(team1[0].hpCurrent); updateContainer("1a");
+		jQuery("#hpCurrent1b").html(team1[1].hpCurrent); updateContainer("1b");
+		jQuery("#hpCurrent1c").html(team1[2].hpCurrent); updateContainer("1c");
+		jQuery("#hpCurrent1d").html(team1[3].hpCurrent); updateContainer("1d");
+		jQuery("#hpCurrent1e").html(team1[4].hpCurrent); updateContainer("1e");
+		jQuery("#hpCurrent1f").html(team1[5].hpCurrent); updateContainer("1f");
+		jQuery("#hpCurrent2a").html(team2[0].hpCurrent); updateContainer("2a");
+		jQuery("#hpCurrent2b").html(team2[1].hpCurrent); updateContainer("2b");
+		jQuery("#hpCurrent2c").html(team2[2].hpCurrent); updateContainer("2c");
+		jQuery("#hpCurrent2d").html(team2[3].hpCurrent); updateContainer("2d");
+		jQuery("#hpCurrent2e").html(team2[4].hpCurrent); updateContainer("2e");
+		jQuery("#hpCurrent2f").html(team2[5].hpCurrent); updateContainer("2f");
 		
 		jQuery("#hpBar1a").css("width", (team1[0].hpCurrent * 100 / team1[0].hpMax) + "%");
 		jQuery("#hpBar1a").css("background-color", getHpBarColor(team1[0].hpCurrent, team1[0].hpMax));
@@ -185,11 +185,22 @@ jQuery(document).ready(function(){
 		else{return "red";}
 	}
 	
-	function colorContainer(target){
+	function updateContainer(target){
 		if(target.charAt(0) == "1"){
-			if(team1[target.charCodeAt(1) - 97].status == "active") {jQuery("#container" + target).addClass("active");jQuery("#container" + target).removeClass("inactive");jQuery("#container" + target).removeClass("fainted");}
-			if(team1[target.charCodeAt(1) - 97].status == "inactive") {jQuery("#container" + target).removeClass("active");jQuery("#container" + target).addClass("inactive");jQuery("#container" + target).removeClass("fainted");}
-			if(team1[target.charCodeAt(1) - 97].status == "fainted") {
+			if(team1[target.charCodeAt(1) - 97].affliction != null) {
+				jQuery("#affliction" + target).html(team1[target.charCodeAt(1) - 97].affliction.display);
+			} else {
+				jQuery("#affliction" + target).html("");
+			}
+			if(team1[target.charCodeAt(1) - 97].status == "active") {
+				jQuery("#container" + target).addClass("active");
+				jQuery("#container" + target).removeClass("inactive");
+				jQuery("#container" + target).removeClass("fainted");
+			} else if(team1[target.charCodeAt(1) - 97].status == "inactive") {
+				jQuery("#container" + target).removeClass("active");
+				jQuery("#container" + target).addClass("inactive");
+				jQuery("#container" + target).removeClass("fainted");
+			} else if(team1[target.charCodeAt(1) - 97].status == "fainted") {
 				jQuery("#container" + target).removeClass("active");
 				jQuery("#container" + target).removeClass("inactive");
 				jQuery("#container" + target).addClass("fainted");
@@ -197,11 +208,22 @@ jQuery(document).ready(function(){
 				jQuery("#move" + target + "2").attr("disabled",true);
 				jQuery("#move" + target + "3").attr("disabled",true);
 				jQuery("#move" + target + "4").attr("disabled",true);
-				}
+			}
 		} else {
-			if(team2[target.charCodeAt(1) - 97].status == "active") {jQuery("#container" + target).addClass("active"); jQuery("#container" + target).removeClass("inactive"); jQuery("#container" + target).removeClass("fainted");}
-			if(team2[target.charCodeAt(1) - 97].status == "inactive") {jQuery("#container" + target).removeClass("active"); jQuery("#container" + target).addClass("inactive"); jQuery("#container" + target).removeClass("fainted");}
-			if(team2[target.charCodeAt(1) - 97].status == "fainted") {
+			if(team2[target.charCodeAt(1) - 97].affliction != null) {
+				jQuery("#affliction" + target).html(team2[target.charCodeAt(1) - 97].affliction.display);
+			} else {
+				jQuery("#affliction" + target).html("");
+			}
+			if(team2[target.charCodeAt(1) - 97].status == "active") {
+				jQuery("#container" + target).addClass("active");
+				jQuery("#container" + target).removeClass("inactive");
+				jQuery("#container" + target).removeClass("fainted");
+			} else if(team2[target.charCodeAt(1) - 97].status == "inactive") {
+				jQuery("#container" + target).removeClass("active");
+				jQuery("#container" + target).addClass("inactive");
+				jQuery("#container" + target).removeClass("fainted");
+			} else if(team2[target.charCodeAt(1) - 97].status == "fainted") {
 				jQuery("#container" + target).removeClass("active");
 				jQuery("#container" + target).removeClass("inactive");
 				jQuery("#container" + target).addClass("fainted");
@@ -209,7 +231,7 @@ jQuery(document).ready(function(){
 				jQuery("#move" + target + "2").attr("disabled",true);
 				jQuery("#move" + target + "3").attr("disabled",true);
 				jQuery("#move" + target + "4").attr("disabled",true);
-				}
+			}
 		}
 	}
 

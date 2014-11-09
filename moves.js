@@ -156,7 +156,7 @@ function ember(attacker,defender,battleState){
 		addToLog(attacker.name + "'s Ember hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 		if(10 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"fire") && defender.affliction == null){
-			defender.affliction = new affliction("burn",-1);
+			defender.affliction = new affliction("burn", -1, "Burned");
 			addToLog(defender.name + " was burned by the attack.");
 		}
 	} else {
@@ -187,7 +187,7 @@ function fireFang(attacker,defender,battleState){
 		addToLog(attacker.name + "'s Fire Fang hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 		if(10 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"fire") && defender.affliction == null){
-			defender.affliction = new affliction("burn",-1);
+			defender.affliction = new affliction("burn", -1, "Burned");
 			addToLog(defender.name + " was burned by the attack.");
 		}
 		if(10 >= rng(1,100) && defender.status != "fainted"){
@@ -328,7 +328,7 @@ function poisonPowder(attacker,defender,battleState){
 		if(hasType(defender,"grass") || hasType(defender,"poison") || hasType(defender,"steel") || defender.affliction != null) {
 			addToLog("But it had no effect.");
 		} else {
-			defender.affliction = new affliction("poison",-1);
+			defender.affliction = new affliction("poison", -1, "Poisoned");
 			addToLog(defender.name + " was poisoned!");
 		}
 	} else {
@@ -359,7 +359,7 @@ function poisonSting(attacker,defender,battleState){
 		addToLog(attacker.name + "'s Poison Sting hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 		if(30 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"steel") && !hasType(defender,"poison") && defender.affliction == null){
-			defender.affliction = new affliction("poison",-1);
+			defender.affliction = new affliction("poison", -1, "Poisoned");
 			addToLog(defender.name + " was poisoned by the attack.");
 		}
 	} else {
@@ -533,7 +533,7 @@ function sleepPowder(attacker,defender,battleState){
 		if(hasType(defender,"grass") || defender.affliction != null) {
 			addToLog("But it had no effect.");
 		} else {
-			defender.affliction = new affliction("sleep",rng(1,3));
+			defender.affliction = new affliction("sleep", rng(1,3), "Asleep");
 			addToLog(defender.name + " fell asleep!");
 		}
 	} else {
@@ -672,7 +672,7 @@ function thundershock(attacker,defender,battleState){
 		addToLog(attacker.name + "'s Thunder Shock hit " + defender.name + " for " + damage + " damage.");
 		dealDamage(defender,damage);
 		if(10 >= rng(1,100) && defender.status != "fainted" && !hasType(defender,"ground") && !hasType(defender,"electric") && defender.affliction == null){
-			defender.affliction = new affliction("paralyzed",-1);
+			defender.affliction = new affliction("paralyzed", -1, "Paralyzed");
 			addToLog(defender.name + " was paralyzed by the attack.");
 		}
 	} else {
