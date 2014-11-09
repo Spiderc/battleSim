@@ -89,18 +89,24 @@ jQuery(document).ready(function(){
 				searchResults.push(allPokemon[i]);
 			}
 		}
-		var searchTable = "<table><tr><td>";
-		for(var i=0;i<searchResults.length;i++){
-			if(i % 7 == 0){
-				searchTable = searchTable + "<tr><td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button><center></td>";
-			} else if(i % 7 == 6){
-				searchTable = searchTable + "<td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button></center></td></tr>";
-			} else {
-				searchTable = searchTable + "<td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button></center></td>";
-			}
+		var searchString = "";
+		if(searchResults.length == 0){
+			searchString = "No valid results.";
+		} else {
+			searchString = "<table><tr><td>";
+			for(var i=0;i<searchResults.length;i++){
+				if(i % 7 == 0){
+					searchString = searchString + "<tr><td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button><center></td>";
+				} else if(i % 7 == 6){
+					searchString = searchString + "<td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button></center></td></tr>";
+				} else {
+					searchString = searchString + "<td><center><img src='http://www.serebii.net/xy/pokemon/" + addZeros(findPokemon(searchResults[i].name).dex) + ".png'><br/><button id='button" + searchResults[i].name + "' class='addToSlot'>" + searchResults[i].name + "</button></center></td>";
+				}
 		}
-		searchTable = searchTable + "</td></tr></table>";
-		jQuery("#searchResults").html(searchTable);
+		searchString = searchString + "</td></tr></table>";
+		}
+
+		jQuery("#searchResults").html(searchString);
 		
 		jQuery(".addToSlot").click(function(){
 			var pokemon = jQuery(this).attr('id').substring(6,jQuery(this).attr('id').length);
